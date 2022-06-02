@@ -52,7 +52,7 @@ blocks:
           commands:
             - mvn -f eureka-server/pom.xml test -Pintegration-testing
 
-  - name: Test
+  - name: Test-BlogPost
     task:
       env_vars:
         - name: MAVEN_OPTS
