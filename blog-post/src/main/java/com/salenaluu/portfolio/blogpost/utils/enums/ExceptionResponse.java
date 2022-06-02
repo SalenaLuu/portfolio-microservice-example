@@ -1,0 +1,12 @@
+package com.salenaluu.portfolio.blogpost.utils.enums;
+
+public enum ExceptionResponse {
+    BLOG_POST_NOT_FOUND,
+    BLOG_POST_ALREADY_EXISTS,
+    BLOG_POST_TAG_DOES_NOT_EXISTS,
+    BLOG_POST_WITH_THESE_TAGS_NOT_FOUND,
+    NO_CONTENT_IN_DB,
+    REQUESTED_MODEL_INVALID,
+    REQUESTED_MODEL_NOT_EXCEPTED,
+    REQUEST_NOT_EXCEPTED
+}
