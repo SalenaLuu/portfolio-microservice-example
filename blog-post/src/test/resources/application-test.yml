@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: test
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
