@@ -1,0 +1,110 @@
+version: v1.0
+name: Java Spring example CI pipeline on Semaphore
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Build-EurekaServer
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=eureka-server/.m2'
+      jobs:
+        - name: Build-EurekaServer
+          commands:
+            - sem-version java 17
+            - checkout
+            - cache restore
+            - 'mvn -f eureka-server/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
+            - cache store
+
+  - name: Build-BlogPost
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=blog-post/.m2'
+      jobs:
+        - name: Build-BlogPost
+          commands:
+            - sem-version java 17
+            - checkout
+            - cache restore
+            - 'mvn -f blog-post/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
+            - cache store
+
+  - name: Test-EurekaServer
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=eureka-server/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+          - mvn -f eureka-server/pom.xml -q test-compile -Dmaven.test.skip=true
+      jobs:
+        - name: Unit tests
+          commands:
+            - mvn -f eureka-server/pom.xml test
+        - name: Integration tests
+          commands:
+            - mvn -f eureka-server/pom.xml test -Pintegration-testing
+
+  - name: Test
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=blog-post/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+          - mvn -f blog-post/pom.xml -q test-compile -Dmaven.test.skip=true
+      jobs:
+        - name: Unit tests
+          commands:
+            - mvn -f blog-post/pom.xml test
+        - name: Integration tests
+          commands:
+            - mvn -f blog-post/pom.xml test -Pintegration-testing
+
+  - name: Performance tests-EurekaServer
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=eureka-server/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+      jobs:
+        - name: Benchmark
+          commands:
+            - java -version
+            - java -jar target/eurkea-server.jar > /dev/null &
+            - sleep 20
+            - 'mvn -f eureka-server/pom.xml -q package jmeter:jmeter'
+            - 'mvn -f eureka-server/pom.xml -q package jmeter:results'
+
+  - name: Performance tests-BlogPost
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=blog-post/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+      jobs:
+        - name: Benchmark
+          commands:
+            - java -version
+            - java -jar target/blog-post.jar > /dev/null &
+            - sleep 20
+            - 'mvn -f blog-post/pom.xml -q package jmeter:jmeter'
+            - 'mvn -f blog-post/pom.xml -q package jmeter:results'

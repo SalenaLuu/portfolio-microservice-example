@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/blog-post/blog-post.iml" filepath="$PROJECT_DIR$/blog-post/blog-post.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/portfolio-microservice-example.iml" filepath="$PROJECT_DIR$/.idea/portfolio-microservice-example.iml" />
+    </modules>
+  </component>
+</project>
