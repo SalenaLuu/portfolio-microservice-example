@@ -125,7 +125,7 @@
 				<version>3.2.1</version>
 				<configuration>
 					<to>
-						<image>eureka-server</image>
+						<image>blog-post</image>
 					</to>
 				</configuration>
 			</plugin>

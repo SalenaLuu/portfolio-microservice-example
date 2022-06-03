@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/api-gateway/api-gateway.iml" filepath="$PROJECT_DIR$/api-gateway/api-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aws-email/aws-email.iml" filepath="$PROJECT_DIR$/aws-email/aws-email.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aws-sqs/aws-sqs.iml" filepath="$PROJECT_DIR$/aws-sqs/aws-sqs.iml" />
       <module fileurl="file://$PROJECT_DIR$/blog-post/blog-post.iml" filepath="$PROJECT_DIR$/blog-post/blog-post.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/portfolio-microservice-example.iml" filepath="$PROJECT_DIR$/.idea/portfolio-microservice-example.iml" />

@@ -6,6 +6,8 @@
         <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/blog-post/pom.xml" />
         <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/aws-email/pom.xml" />
+        <option value="$PROJECT_DIR$/aws-sqs/pom.xml" />
       </list>
     </option>
   </component>
