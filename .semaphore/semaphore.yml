@@ -59,7 +59,7 @@ blocks:
           - sem-version java 17
           - checkout
           - cache restore
-          - mvn -f blog-post/pom.xml -q test-compile -Dmaven.test.skip=true clean install
+          - mvn -f blog-post/pom.xml -q test-compile -Dmaven.test.skip=true
       jobs:
         - name: Unit tests
           commands:
