@@ -26,7 +26,6 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
-@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @Import(BlogPostServiceImpl.class)
 @WebFluxTest(controllers = BlogPostController.class)
