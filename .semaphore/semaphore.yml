@@ -31,6 +31,21 @@ blocks:
             - cache restore
             - 'mvn -f blog-post/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
+
+  - name: Build-APIGateway
+      task:
+        env_vars:
+            - name: MAVEN_OPTS
+              value: '-Dmaven.repo.local=api-gateway/.m2'
+        jobs:
+          - name: Build-BlogPost
+            commands:
+              - sem-version java 17
+              - checkout
+              - cache restore
+              - 'mvn -f api-gateway/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
+              - cache store
+
   - name: Test-EurekaServer
     task:
       env_vars:
@@ -67,6 +82,26 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f blog-post/pom.xml test -Pintegration-testing
+
+  - name: Test-APIGateway
+      task:
+        env_vars:
+            - name: MAVEN_OPTS
+              value: '-Dmaven.repo.local=api-gateway/.m2'
+        prologue:
+          commands:
+            - sem-version java 17
+            - checkout
+            - cache restore
+            - mvn -f api-gateway/pom.xml -q test-compile -Dmaven.test.skip=true
+        jobs:
+          - name: Unit tests
+            commands:
+              - mvn -f api-gateway/pom.xml test
+          - name: Integration tests
+            commands:
+              - mvn -f api-gateway/pom.xml test -Pintegration-testing
+
   - name: Performance tests-EurekaServer
     task:
       env_vars:
@@ -103,3 +138,22 @@ blocks:
             - sleep 20
             - 'mvn -f blog-post/pom.xml -q package jmeter:jmeter'
             - 'mvn -f blog-post/pom.xml -q package jmeter:results'
+
+  - name: Performance tests-APIGateway
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=api-gateway/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+      jobs:
+        - name: Benchmark
+          commands:
+            - java -version
+            - java -jar target/api-gateway.jar > /dev/null &
+            - sleep 20
+            - 'mvn -f api-gateway/pom.xml -q package jmeter:jmeter'
+            - 'mvn -f api-gateway/pom.xml -q package jmeter:results'
