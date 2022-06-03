@@ -4,8 +4,6 @@ server:
 spring:
   application:
     name: blog-post
-  profiles:
-    active: development
 
   data:
     mongodb:

@@ -18,7 +18,6 @@ blocks:
             - cache restore
             - 'mvn -f eureka-server/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
-
   - name: Build-BlogPost
     task:
       env_vars:
@@ -32,7 +31,6 @@ blocks:
             - cache restore
             - 'mvn -f blog-post/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
-
   - name: Test-EurekaServer
     task:
       env_vars:
@@ -51,7 +49,6 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f eureka-server/pom.xml test -Pintegration-testing
-
   - name: Test-BlogPost
     task:
       env_vars:
@@ -70,7 +67,6 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f blog-post/pom.xml test -Pintegration-testing
-
   - name: Performance tests-EurekaServer
     task:
       env_vars:
@@ -89,7 +85,6 @@ blocks:
             - sleep 20
             - 'mvn -f eureka-server/pom.xml -q package jmeter:jmeter'
             - 'mvn -f eureka-server/pom.xml -q package jmeter:results'
-
   - name: Performance tests-BlogPost
     task:
       env_vars:
