@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/aws-sqs/aws-sqs.iml" filepath="$PROJECT_DIR$/aws-sqs/aws-sqs.iml" />
       <module fileurl="file://$PROJECT_DIR$/blog-post/blog-post.iml" filepath="$PROJECT_DIR$/blog-post/blog-post.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/notification/notification.iml" filepath="$PROJECT_DIR$/notification/notification.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/portfolio-microservice-example.iml" filepath="$PROJECT_DIR$/.idea/portfolio-microservice-example.iml" />
     </modules>
   </component>

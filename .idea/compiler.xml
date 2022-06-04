@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
+        <module name="notification" />
         <module name="aws-sqs" />
         <module name="eureka-server" />
         <module name="blog-post" />
@@ -19,6 +20,7 @@
       <module name="aws-sqs" target="17" />
       <module name="blog-post" target="17" />
       <module name="eureka-server" target="17" />
+      <module name="notification" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -28,6 +30,7 @@
       <module name="aws-sqs" options="-parameters" />
       <module name="blog-post" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="notification" options="-parameters" />
     </option>
   </component>
 </project>
