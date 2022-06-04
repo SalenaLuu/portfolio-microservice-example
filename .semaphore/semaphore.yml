@@ -160,7 +160,3 @@ blocks:
             - sleep 20
             - 'mvn -f api-gateway/pom.xml -q package jmeter:jmeter'
             - 'mvn -f api-gateway/pom.xml -q package jmeter:results'
-
-promotions:
-  - name: Deploy to DigitalOcean
-    pipeline_file: deploy-k8s.yml
