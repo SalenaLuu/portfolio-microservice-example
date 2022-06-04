@@ -10,7 +10,6 @@ blocks:
       secrets:
         - name: dockerhub
         - name: do-access-token
-        - name: env-production
       env_vars:
         - name: CLUSTER_NAME
           value: k8s-portfolio
@@ -22,7 +21,6 @@ blocks:
       jobs:
         - name: Deploy
           commands:
-            - source $HOME/env-production
             - envsubst < deployment.yml | tee deploy.yml
             - kubectl apply -f deploy.yml
   - name: Tag latest release
