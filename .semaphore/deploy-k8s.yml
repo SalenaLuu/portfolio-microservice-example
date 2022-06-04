@@ -1,0 +1,45 @@
+version: v1.0
+name: Deploy to Kubernetes
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Deploy to Kubernetes
+    task:
+      # Import all the secrets
+      secrets:
+        - name: dockerhub
+        - name: do-access-token
+      # Store your Kubernetes cluster name in an environment variable so you can reference it later
+      env_vars:
+        - name: CLUSTER_NAME
+          value: k8s-portfolio
+      prologue:
+        commands:
+          # Add the login commands in the prologue
+          - doctl auth init --access-token $DO_ACCESS_TOKEN
+          - doctl kubernetes cluster kubeconfig save "${CLUSTER_NAME}"
+          - checkout
+      jobs:
+        - name: Deploy
+          commands:
+            - source $HOME/env-production
+            - envsubst < deployment.yml | tee deploy.yml
+            - kubectl apply -f deploy.yml
+
+  - name: Tag latest release
+    task:
+      secrets:
+        - name: dockerhub
+      prologue:
+        commands:
+          - checkout
+          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+          - checkout
+      jobs:
+        - name: docker tag latest
+          commands:
+            - docker pull "${DOCKER_USERNAME}/portfolio-microservice-example:$SEMAPHORE_WORKFLOW_ID"
+            - docker tag "${DOCKER_USERNAME}/portfolio-microservice-example:$SEMAPHORE_WORKFLOW_ID" "${DOCKER_USERNAME}/portfolio-microservice-example:latest"
+            - docker push "${DOCKER_USERNAME}/portfolio-microservice-example:latest"
