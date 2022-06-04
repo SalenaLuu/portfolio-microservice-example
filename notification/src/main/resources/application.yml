@@ -1,0 +1,37 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: notification
+
+cloud:
+  aws:
+    region:
+      static: eu-central-1
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+    sns:
+      topic:
+        interviewStatus:
+          arn: ${SNS_ARN}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+        internal:
+          InstanceMetadataServiceResourceFetcher: error

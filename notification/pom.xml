@@ -10,11 +10,11 @@
 	</parent>
 
 	<groupId>com.salenaluu.portfolio</groupId>
-	<artifactId>blog-post</artifactId>
+	<artifactId>notification</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>blog-post</name>
-	<description>Demo project for Spring Boot</description>
+	<name>notification</name>
+	<description>service for notification</description>
 
 	<properties>
 		<java.version>17</java.version>
@@ -28,50 +28,38 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
-		<!-- ========== DATABASE ========== -->
-		<!-- == MongoDB == -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
-		</dependency>
 		<!-- ========== EUREKA ========== -->
 		<!-- == Server == -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+		<!-- ========== AWS ========== -->
+		<!-- == Basic == -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-aws</artifactId>
+			<version>2.2.6.RELEASE</version>
+		</dependency>
+		<!-- == Messaging == -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-aws-messaging</artifactId>
+			<version>2.2.6.RELEASE</version>
+		</dependency>
 		<!-- ========== Tools ========== -->
+		<!-- == Actuator == -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		<!-- == Lombok == -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- == DevTools == -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<!-- == Actuator == -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<!-- == Validation == -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
 		<!-- ========== TESTING ========== -->
-		<!-- == ASSERTJ == -->
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.22.0</version>
-			<scope>test</scope>
-		</dependency>
 		<!-- == STARTER == -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -126,7 +114,7 @@
 				<version>3.2.1</version>
 				<configuration>
 					<to>
-						<image>blog-post</image>
+						<image>notification</image>
 					</to>
 				</configuration>
 			</plugin>
@@ -160,4 +148,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
