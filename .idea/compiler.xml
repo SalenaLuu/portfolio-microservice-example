@@ -8,10 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="notification" />
-        <module name="aws-sqs" />
         <module name="eureka-server" />
         <module name="blog-post" />
-        <module name="aws-email" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +17,7 @@
       <module name="aws-email" target="17" />
       <module name="aws-sqs" target="17" />
       <module name="blog-post" target="17" />
+      <module name="config-server" target="17" />
       <module name="eureka-server" target="17" />
       <module name="notification" target="17" />
     </bytecodeTargetLevel>
@@ -29,6 +28,7 @@
       <module name="aws-email" options="-parameters" />
       <module name="aws-sqs" options="-parameters" />
       <module name="blog-post" options="-parameters" />
+      <module name="config-server" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="notification" options="-parameters" />
     </option>

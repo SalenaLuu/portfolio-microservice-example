@@ -15,7 +15,7 @@ target/
 
 ######
 .env
-
+.env.okta
 ### IntelliJ IDEA ###
 .idea
 *.iws
