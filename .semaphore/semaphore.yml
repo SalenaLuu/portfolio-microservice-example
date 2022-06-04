@@ -49,18 +49,18 @@ blocks:
             - cache store
   ##### ===== BUILD NOTIFICATION ===== #####
   - name: Build-Notification
-      task:
-        env_vars:
-            - name: MAVEN_OPTS
-              value: '-Dmaven.repo.local=notification/.m2'
-        jobs:
-          - name: Build-BlogPost
-            commands:
-              - sem-version java 17
-              - checkout
-              - cache restore
-              - 'mvn -f notification/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
-              - cache store
+    task:
+      env_vars:
+          - name: MAVEN_OPTS
+            value: '-Dmaven.repo.local=notification/.m2'
+      jobs:
+        - name: Build-BlogPost
+          commands:
+            - sem-version java 17
+            - checkout
+            - cache restore
+            - 'mvn -f notification/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
+            - cache store
   ##### ===== TEST EUREKA-SERVER ===== #####
   - name: Test-EurekaServer
     task:
@@ -120,23 +120,23 @@ blocks:
             - mvn -f api-gateway/pom.xml test -Pintegration-testing
   ##### ===== TEST NOTIFICATION ===== #####
   - name: Test-Notification
-      task:
-        env_vars:
-            - name: MAVEN_OPTS
-              value: '-Dmaven.repo.local=notification/.m2'
-        prologue:
+    task:
+      env_vars:
+          - name: MAVEN_OPTS
+            value: '-Dmaven.repo.local=notification/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+          - mvn -f notification/pom.xml -q test-compile -Dmaven.test.skip=true
+      jobs:
+        - name: Unit tests
           commands:
-            - sem-version java 17
-            - checkout
-            - cache restore
-            - mvn -f notification/pom.xml -q test-compile -Dmaven.test.skip=true
-        jobs:
-          - name: Unit tests
-            commands:
-              - mvn -f notification/pom.xml test
-          - name: Integration tests
-            commands:
-              - mvn -f notification/pom.xml test -Pintegration-testing
+            - mvn -f notification/pom.xml test
+        - name: Integration tests
+          commands:
+            - mvn -f notification/pom.xml test -Pintegration-testing
   ##### ===== PERFORMANCE TESTS EUREKA-SERVER ===== #####
   - name: Performance tests-EurekaServer
     task:
@@ -196,20 +196,20 @@ blocks:
             - 'mvn -f api-gateway/pom.xml -q package jmeter:results'
   ##### ===== PERFORMANCE TESTS NOTIFICATION ===== #####
   - name: Performance tests-Notification
-      task:
-        env_vars:
-            - name: MAVEN_OPTS
-              value: '-Dmaven.repo.local=notification/.m2'
-        prologue:
+    task:
+      env_vars:
+          - name: MAVEN_OPTS
+            value: '-Dmaven.repo.local=notification/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+      jobs:
+        - name: Benchmark
           commands:
-            - sem-version java 17
-            - checkout
-            - cache restore
-        jobs:
-          - name: Benchmark
-            commands:
-              - java -version
-              - java -jar target/notification.jar > /dev/null &
-              - sleep 20
-              - 'mvn -f notification/pom.xml -q package jmeter:jmeter'
-              - 'mvn -f notification/pom.xml -q package jmeter:results'
+            - java -version
+            - java -jar target/notification.jar > /dev/null &
+            - sleep 20
+            - 'mvn -f notification/pom.xml -q package jmeter:jmeter'
+            - 'mvn -f notification/pom.xml -q package jmeter:results'
