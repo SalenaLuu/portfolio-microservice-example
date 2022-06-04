@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: notification
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    baseUrl: http://localhost:9411/
 
 cloud:
   aws:
