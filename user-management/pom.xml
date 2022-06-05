@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.8</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <artifactId>user-management</artifactId>
+    <description>user-management</description>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring-cloud.version>2021.0.3</spring-cloud.version>
+    </properties>
+
+    <dependencies>
+        <!-- ========== SPRING WEBFLUX ========== -->
+        <!-- == Webflux == -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <!-- ========== EUREKA ========== -->
+        <!-- == Client == -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!-- ========== SECURITY ========== -->
+        <!-- == Okta == -->
+        <dependency>
+            <groupId>com.okta.spring</groupId>
+            <artifactId>okta-spring-boot-starter</artifactId>
+            <version>2.1.5</version>
+        </dependency>
+        <!-- == SECURITY TEST == -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- ========== Tools ========== -->
+        <!-- == Lombok == -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!-- ========== TESTING ========== -->
+        <!-- == AssertJ == -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.22.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- == Starter == -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <to>
+                        <image>user-management</image>
+                    </to>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <!-- Generate JMeter configuration -->
+                    <execution>
+                        <id>configuration</id>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+                    <!-- Run JMeter tests -->
+                    <execution>
+                        <id>jmeter-tests</id>
+                        <goals>
+                            <goal>jmeter</goal>
+                        </goals>
+                    </execution>
+                    <!-- Fail build on errors in test -->
+                    <execution>
+                        <id>jmeter-check-results</id>
+                        <goals>
+                            <goal>results</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
