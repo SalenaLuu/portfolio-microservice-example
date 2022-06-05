@@ -40,6 +40,12 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+		<!-- ========== SECURITY ========== -->
+		<dependency>
+			<groupId>com.okta.spring</groupId>
+			<artifactId>okta-spring-boot-starter</artifactId>
+			<version>2.1.5</version>
+		</dependency>
 		<!-- ========== Tools ========== -->
 		<!-- == Lombok == -->
 		<dependency>
