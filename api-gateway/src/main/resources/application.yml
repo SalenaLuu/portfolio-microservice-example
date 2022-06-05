@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: gateway
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    baseUrl: http://localhost:9411/
 
   cloud:
     gateway:
@@ -12,6 +17,12 @@ spring:
           uri: lb://blog-post
           predicates:
             - Path=/api/v1/blogpost**
+        - id: NotificationController
+          uri: lb://notification
+          predicates:
+            - Path=/api/v1/mail/**
+
+
 eureka:
   client:
     service-url:

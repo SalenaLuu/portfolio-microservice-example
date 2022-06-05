@@ -4,7 +4,11 @@ server:
 spring:
   application:
     name: blog-post
-
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    baseUrl: http://localhost:9411/
   data:
     mongodb:
       uri: mongodb://localhost:27017/portfolio

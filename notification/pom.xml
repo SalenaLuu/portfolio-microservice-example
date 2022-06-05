@@ -34,18 +34,14 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+		<!-- ========== SECURITY ========== -->
+
 		<!-- ========== AWS ========== -->
-		<!-- == Basic == -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-aws</artifactId>
-			<version>2.2.6.RELEASE</version>
-		</dependency>
 		<!-- == Messaging == -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-aws-messaging</artifactId>
-			<version>2.2.6.RELEASE</version>
+			<version>2.2.5.RELEASE</version>
 		</dependency>
 		<!-- ========== Tools ========== -->
 		<!-- == Actuator == -->
@@ -58,6 +54,15 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<!-- == Tracing == -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
 		</dependency>
 		<!-- ========== TESTING ========== -->
 		<!-- == STARTER == -->
@@ -91,14 +96,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -148,5 +145,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
