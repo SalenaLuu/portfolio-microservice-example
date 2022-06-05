@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8080
 
 spring:
   application:
@@ -12,6 +12,12 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/portfolio
+
+okta:
+  oauth2:
+    issuer: https://dev-58955540.okta.com/oauth2/default
+    client-id: ${OKTA_CLIENT_ID}
+    client-secret: ${OKTA_CLIENT_SECRET}
 
 eureka:
   client:

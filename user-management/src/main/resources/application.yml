@@ -1,0 +1,24 @@
+server:
+  port: 1997
+
+spring:
+  application:
+    name: user-management
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  sleuth:
+    sampler:
+      probability: 1.0
+    zipkin:
+      baseUrl: http://localhost:9411/
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+
+okta:
+  oauth2:
+    issuer: https://dev-58955540.okta.com/oauth2/default
+    client-id: ${OKTA_CLIENT_ID}
+    client-secret: ${OKTA_CLIENT_SECRET}

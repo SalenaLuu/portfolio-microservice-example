@@ -40,7 +40,7 @@ blocks:
         - name: MAVEN_OPTS
           value: '-Dmaven.repo.local=api-gateway/.m2'
       jobs:
-        - name: Build-BlogPost
+        - name: Build-APIGateway
           commands:
             - sem-version java 17
             - checkout
@@ -54,12 +54,26 @@ blocks:
           - name: MAVEN_OPTS
             value: '-Dmaven.repo.local=notification/.m2'
       jobs:
-        - name: Build-BlogPost
+        - name: Build-Notification
           commands:
             - sem-version java 17
             - checkout
             - cache restore
             - 'mvn -f notification/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
+            - cache store
+  ##### ===== BUILD USER-MANAGEMENT ===== #####
+  - name: Build-User-Management
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=user-management/.m2'
+      jobs:
+        - name: Build-User-Management
+          commands:
+            - sem-version java 17
+            - checkout
+            - cache restore
+            - 'mvn -f user-management/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
   ##### ===== TEST EUREKA-SERVER ===== #####
   - name: Test-EurekaServer
@@ -137,6 +151,25 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f notification/pom.xml test -Pintegration-testing
+  ##### ===== TEST USER-MANAGEMENT ===== #####
+  - name: Test-User-Management
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=user-management/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+          - mvn -f user-management/pom.xml -q test-compile -Dmaven.test.skip=true
+      jobs:
+        - name: Unit tests
+          commands:
+            - mvn -f user-management/pom.xml test
+        - name: Integration tests
+          commands:
+            - mvn -f user-management/pom.xml test -Pintegration-testing
   ##### ===== PERFORMANCE TESTS EUREKA-SERVER ===== #####
   - name: Performance tests-EurekaServer
     task:
@@ -213,3 +246,22 @@ blocks:
             - sleep 20
             - 'mvn -f notification/pom.xml -q package jmeter:jmeter'
             - 'mvn -f notification/pom.xml -q package jmeter:results'
+  ##### ===== PERFORMANCE TESTS USER-MANAGEMENT ===== #####
+  - name: Performance tests-User-Management
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=user-management/.m2'
+      prologue:
+        commands:
+          - sem-version java 17
+          - checkout
+          - cache restore
+      jobs:
+        - name: Benchmark
+          commands:
+            - java -version
+            - java -jar target/user-management.jar > /dev/null &
+            - sleep 20
+            - 'mvn -f user-management/pom.xml -q package jmeter:jmeter'
+            - 'mvn -f user-management/pom.xml -q package jmeter:results'
