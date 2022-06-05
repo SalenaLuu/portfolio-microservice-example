@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/aws-email/pom.xml" />
         <option value="$PROJECT_DIR$/aws-sqs/pom.xml" />
         <option value="$PROJECT_DIR$/notification/pom.xml" />
+        <option value="$PROJECT_DIR$/user-management/pom.xml" />
       </list>
     </option>
   </component>
