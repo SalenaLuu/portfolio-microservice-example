@@ -152,7 +152,7 @@ blocks:
           commands:
             - mvn -f notification/pom.xml test -Pintegration-testing
   ##### ===== TEST USER-MANAGEMENT ===== #####
-  - name: Test-Notification
+  - name: Test-User-Management
     task:
       env_vars:
         - name: MAVEN_OPTS
