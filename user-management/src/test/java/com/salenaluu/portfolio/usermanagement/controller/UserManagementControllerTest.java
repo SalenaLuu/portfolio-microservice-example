@@ -42,7 +42,6 @@ class UserManagementControllerTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.userName").isNotEmpty()
-                //.jsonPath("$.email").isNotEmpty()
                 .jsonPath("$.idToken").isNotEmpty()
                 .jsonPath("$.accessToken").isNotEmpty();
     }
