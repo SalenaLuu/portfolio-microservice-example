@@ -19,6 +19,7 @@ blocks:
             - cache restore
             - 'mvn -f eureka-server/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
+    ...
   ##### ===== BUILD BLOGPOST ===== #####
   - name: Build-BlogPost
     task:
@@ -33,6 +34,7 @@ blocks:
             - cache restore
             - 'mvn -f blog-post/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
+    ...
   ##### ===== BUILD API-GATEWAY ===== #####
   - name: Build-APIGateway
     task:
@@ -47,6 +49,7 @@ blocks:
             - cache restore
             - 'mvn -f api-gateway/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
+    ...
   ##### ===== BUILD NOTIFICATION ===== #####
   - name: Build-Notification
     task:
@@ -61,6 +64,7 @@ blocks:
             - cache restore
             - 'mvn -f notification/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
+    ...
   ##### ===== BUILD USER-MANAGEMENT ===== #####
   - name: Build-User-Management
     task:
@@ -75,6 +79,7 @@ blocks:
             - cache restore
             - 'mvn -f user-management/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
+    ...
   ##### ===== TEST EUREKA-SERVER ===== #####
   - name: Test-EurekaServer
     task:
@@ -94,6 +99,7 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f eureka-server/pom.xml test -Pintegration-testing
+    ...
   ##### ===== TEST BLOG-POST ===== #####
   - name: Test-BlogPost
     task:
@@ -113,6 +119,7 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f blog-post/pom.xml test -Pintegration-testing
+    ...
   ##### ===== TEST API-GATEWAY ===== #####
   - name: Test-APIGateway
     task:
@@ -132,6 +139,7 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f api-gateway/pom.xml test -Pintegration-testing
+    ...
   ##### ===== TEST NOTIFICATION ===== #####
   - name: Test-Notification
     task:
@@ -151,6 +159,7 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f notification/pom.xml test -Pintegration-testing
+    ...
   ##### ===== TEST USER-MANAGEMENT ===== #####
   - name: Test-User-Management
     task:
@@ -170,6 +179,7 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f user-management/pom.xml test -Pintegration-testing
+    ...
   ##### ===== PERFORMANCE TESTS EUREKA-SERVER ===== #####
   - name: Performance tests-EurekaServer
     task:
@@ -189,6 +199,7 @@ blocks:
             - sleep 20
             - 'mvn -f eureka-server/pom.xml -q package jmeter:jmeter'
             - 'mvn -f eureka-server/pom.xml -q package jmeter:results'
+    ...
   ##### ===== PERFORMANCE TESTS BLOG-POST ===== #####
   - name: Performance tests-BlogPost
     task:
@@ -208,6 +219,7 @@ blocks:
             - sleep 20
             - 'mvn -f blog-post/pom.xml -q package jmeter:jmeter'
             - 'mvn -f blog-post/pom.xml -q package jmeter:results'
+    ...
   ##### ===== PERFORMANCE TESTS API-GATEWAY ===== #####
   - name: Performance tests-APIGateway
     task:
@@ -227,6 +239,7 @@ blocks:
             - sleep 20
             - 'mvn -f api-gateway/pom.xml -q package jmeter:jmeter'
             - 'mvn -f api-gateway/pom.xml -q package jmeter:results'
+    ...
   ##### ===== PERFORMANCE TESTS NOTIFICATION ===== #####
   - name: Performance tests-Notification
     task:
@@ -246,6 +259,7 @@ blocks:
             - sleep 20
             - 'mvn -f notification/pom.xml -q package jmeter:jmeter'
             - 'mvn -f notification/pom.xml -q package jmeter:results'
+    ...
   ##### ===== PERFORMANCE TESTS USER-MANAGEMENT ===== #####
   - name: Performance tests-User-Management
     task:
