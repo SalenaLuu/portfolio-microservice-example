@@ -75,7 +75,6 @@ blocks:
             - cache restore
             - 'mvn -f user-management/pom.xml -q package jmeter:configure -Dmaven.test.skip=true'
             - cache store
----
   ##### ===== TEST EUREKA-SERVER ===== #####
   - name: Test-EurekaServer
     task:
@@ -171,7 +170,6 @@ blocks:
         - name: Integration tests
           commands:
             - mvn -f user-management/pom.xml test -Pintegration-testing
----
   ##### ===== PERFORMANCE TESTS EUREKA-SERVER ===== #####
   - name: Performance tests-EurekaServer
     task:
