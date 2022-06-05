@@ -12,6 +12,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/portfolio
+  profiles:
+    active: development
 
 okta:
   oauth2:

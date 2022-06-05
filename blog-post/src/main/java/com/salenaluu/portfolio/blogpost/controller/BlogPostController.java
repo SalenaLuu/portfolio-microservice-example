@@ -5,6 +5,7 @@ import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequest;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequestUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,6 +18,7 @@ public class BlogPostController {
     private final BlogPostServiceImpl blogPostServiceImpl;
 
     @PostMapping
+    @PreAuthorize("authenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<BlogPostRequest> createBlogPost(@RequestBody BlogPostRequest blogPostRequest){
         return blogPostServiceImpl.createBlogPost(blogPostRequest);
