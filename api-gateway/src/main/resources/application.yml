@@ -21,7 +21,17 @@ spring:
           uri: lb://notification
           predicates:
             - Path=/api/v1/mail/**
+        - id: UserManagementController
+          uri: lb://user-management
+          predicates:
+            - Path=/api/v1/userdata**
 
+okta:
+  oauth2:
+    issuer: https://dev-58955540.okta.com/oauth2/default
+    client-id: 0oa5863m10Y6kLUKC5d7
+    client-secret: a6EMP-wt6rBOdCjxWNxcFKQPijkHeJqViTKER3yv
+    scopes: openid, profile, email
 
 eureka:
   client:

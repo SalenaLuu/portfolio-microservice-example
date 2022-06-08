@@ -15,11 +15,13 @@ spring:
   profiles:
     active: development
 
-okta:
-  oauth2:
-    issuer: https://dev-58955540.okta.com/oauth2/default
-    client-id: ${OKTA_CLIENT_ID}
-    client-secret: ${OKTA_CLIENT_SECRET}
+  security:
+    oauth2:
+      resourceserver:
+        opaque-token:
+          introspection-uri:  ${OKTA_ISSUER}
+          client-id: ${OKTA_CLIENT_ID}
+          client-secret: ${OKTA_CLIENT_SECRET}
 
 eureka:
   client:

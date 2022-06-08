@@ -77,7 +77,8 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.save(any()))
                 .willReturn(Mono.just(blogPost));
 
-        Mono<BlogPostRequest> requestedBlogPost = blogPostService.createBlogPost(blogPostRequest);
+        Mono<BlogPostRequest> requestedBlogPost =
+                blogPostService.createBlogPost(blogPostRequest);
 
         StepVerifier
                 .create(requestedBlogPost)
@@ -85,9 +86,7 @@ class BlogPostServiceImplTest {
                     assertThat(check.title())
                             .isEqualTo("This is the way");
                     assertThat(check.content())
-                            .isEqualTo("A special sentence with force in it.");
-                    assertThat(check.creatorEmail())
-                            .isEqualTo("salenaluu@gmail.com");})
+                            .isEqualTo("A special sentence with force in it.");})
                 .verifyComplete();
     }
 
@@ -113,10 +112,11 @@ class BlogPostServiceImplTest {
         BlogPostRequest emptyBlogPostRequest = new BlogPostRequest(
                 "",
                 "",
-                "test.test.com",
+                blogPost.getCreatorEmail(),
                 new String[]{});
 
-        Mono<BlogPostRequest> requestedBlockPost = blogPostService.createBlogPost(emptyBlogPostRequest);
+        Mono<BlogPostRequest> requestedBlockPost =
+                blogPostService.createBlogPost(emptyBlogPostRequest);
 
         StepVerifier
                 .create(requestedBlockPost)
@@ -131,7 +131,8 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.save(any()))
                 .willReturn(Mono.empty());
 
-        Mono<BlogPostRequest> requestedBlogPost = blogPostService.createBlogPost(blogPostRequest);
+        Mono<BlogPostRequest> requestedBlogPost =
+                blogPostService.createBlogPost(blogPostRequest);
 
         StepVerifier
                 .create(requestedBlogPost)
@@ -157,9 +158,7 @@ class BlogPostServiceImplTest {
                     assertThat(check.title())
                             .isEqualTo("This is the way");
                     assertThat(check.content())
-                            .isEqualTo("A special sentence with force in it.");
-                    assertThat(check.creatorEmail())
-                            .isEqualTo("salenaluu@gmail.com");})
+                            .isEqualTo("A special sentence with force in it.");})
                 .verifyComplete();
     }
 
@@ -191,9 +190,7 @@ class BlogPostServiceImplTest {
                 .create(allBlogPosts)
                 .assertNext(check -> {
                     assertThat(check.title())
-                            .isEqualTo("This is the way");
-                    assertThat(check.creatorEmail())
-                            .isEqualTo("salenaluu@gmail.com");})
+                            .isEqualTo("This is the way");})
                 .verifyComplete();
     }
 
@@ -274,8 +271,6 @@ class BlogPostServiceImplTest {
         StepVerifier
                 .create(requestedBlogPostUpdate)
                 .assertNext(check -> {
-                    assertThat(check.creatorEmail())
-                            .isEqualTo("salenaluu@gmail.com");
                     assertThat(check.title())
                             .isEqualTo("This is a joke");
                     assertThat(check.tags().length)

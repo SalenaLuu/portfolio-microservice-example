@@ -1,18 +1,15 @@
-package com.salenaluu.portfolio.usermanagement.security;
+package com.salenaluu.portfolio.apigateway.security;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @EnableWebFluxSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class UserManagementSecurity {
+public class SecurityConfiguration {
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http){
-        http
-                .csrf().disable()
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        http.csrf().disable()
                 .authorizeExchange()
                 .anyExchange()
                 .authenticated()

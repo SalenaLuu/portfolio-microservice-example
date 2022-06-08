@@ -34,7 +34,7 @@ public class BlogPostServiceImpl implements IBlogPostService {
         return blogPostRepository
                 .existsBlogPostByTitleAndCreatorEmail(
                         blogPostRequest.title(),
-                        blogPostRequest.creatorEmail())
+                        blogPostRequest.email())
                 .flatMap(exists -> {
                     if(exists){
                         return Mono.error(
@@ -46,14 +46,14 @@ public class BlogPostServiceImpl implements IBlogPostService {
                                         blogPostRequest.title(),
                                         blogPostRequest.content(),
                                         IDateTimeCreator.createDateTime(),
-                                        blogPostRequest.creatorEmail(),
+                                        blogPostRequest.email(),
                                         stream(blogPostRequest.tags())
                                                 .map(tags -> Tags.valueOf(tags.toUpperCase()))
                                                 .collect(Collectors.toSet())))
                                 .map(blogPost -> new BlogPostRequest(
                                         blogPost.getTitle(),
                                         blogPost.getContent(),
-                                        blogPost.getCreatorEmail(),
+                                        blogPostRequest.email(),
                                         blogPost.getTags().stream()
                                                 .map(Enum::toString)
                                                 .toArray(String[]::new)))
@@ -79,7 +79,7 @@ public class BlogPostServiceImpl implements IBlogPostService {
                                 .map(request -> new BlogPostRequest(
                                         request.getTitle(),
                                         request.getContent(),
-                                        request.getCreatorEmail(),
+                                        email,
                                         request.getTags().stream()
                                                 .map(Enum::toString)
                                                 .toArray(String[]::new)))
