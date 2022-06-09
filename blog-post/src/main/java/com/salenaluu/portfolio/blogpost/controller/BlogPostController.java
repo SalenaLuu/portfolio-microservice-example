@@ -4,6 +4,7 @@ import com.salenaluu.portfolio.blogpost.service.BlogPostServiceImpl;
 import com.salenaluu.portfolio.blogpost.utils.interfaces.IUserManagement;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequest;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequestUpdate;
+import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,44 +25,48 @@ public class BlogPostController {
     @PostMapping
     @PreAuthorize("hasAuthority('portfolio_explorer')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<BlogPostRequest> createBlogPost(@RequestBody BlogPostRequest blogPostRequest){
-        log.info("Test Info from: " + iUserManagement.currentEmail().subscribe());
-        return blogPostServiceImpl.createBlogPost(blogPostRequest);
+    public Mono<BlogPostResponse> createBlogPost(@RequestBody BlogPostRequest blogPostRequest){
+       return iUserManagement
+               .currentEmail()
+               .flatMap(req -> blogPostServiceImpl.createBlogPost(blogPostRequest,req));
     }
 
     @GetMapping("/{title}")
     @PreAuthorize("hasAuthority('portfolio_explorer')")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<BlogPostRequest> getBlogPostByTitleAndCreatorEmail(@PathVariable String title){
-        String email = "test@example.com"; // TODO: Replace with Oidc
-        return blogPostServiceImpl.getBlogPostByTitleAndCreatorEmail(title,email);
+    public Mono<BlogPostResponse> getBlogPostByTitleAndCreatorEmail(@PathVariable String title){
+        return iUserManagement
+                .currentEmail()
+                .flatMap(req -> blogPostServiceImpl.getBlogPostByTitleAndCreatorEmail(title,req));
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Flux<BlogPostRequest> getAllBlogPosts(){
+    public Flux<BlogPostResponse> getAllBlogPosts(){
         return blogPostServiceImpl.getAllBlogPosts();
     }
 
     @GetMapping("/filter")
     @ResponseStatus(HttpStatus.OK)
-    public Flux<BlogPostRequest> getBlogPostByTags(@RequestParam String[] tags){
+    public Flux<BlogPostResponse> getBlogPostByTags(@RequestParam String[] tags){
         return blogPostServiceImpl.getAllBlogPostsWithTags(tags);
     }
 
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('portfolio_explorer')")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<BlogPostRequest> updateBlogPost(@RequestBody BlogPostRequestUpdate blogPostRequest){
-        String email = "test@example.com"; // TODO: Replace with Oidc
-        return blogPostServiceImpl.updateBlogPost(blogPostRequest,email);
+    public Mono<BlogPostResponse> updateBlogPost(@RequestBody BlogPostRequestUpdate blogPostRequest){
+        return iUserManagement
+                .currentEmail()
+                .flatMap(req -> blogPostServiceImpl.updateBlogPost(blogPostRequest,req));
     }
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('portfolio_explorer')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteBlogPostByTitleAndCreatorEmail(@RequestParam String title){
-        String email = "test@example.com"; // TODO: Replace with Oidc
-        return blogPostServiceImpl.deleteBlogPostByTitleAndCreatorEmail(title,email);
+        return iUserManagement
+                .currentEmail()
+                .flatMap(req -> blogPostServiceImpl.deleteBlogPostByTitleAndCreatorEmail(title,req));
     }
 }

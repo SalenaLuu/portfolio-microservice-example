@@ -9,6 +9,7 @@ import com.salenaluu.portfolio.blogpost.utils.exceptions.NotFoundException;
 import com.salenaluu.portfolio.blogpost.utils.interfaces.IDateTimeCreator;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequest;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequestUpdate;
+import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,11 @@ public class BlogPostServiceImpl implements IBlogPostService {
     private final IBlogPostRepository blogPostRepository;
 
     @Override
-    public Mono<BlogPostRequest> createBlogPost(BlogPostRequest blogPostRequest) {
+    public Mono<BlogPostResponse> createBlogPost(BlogPostRequest blogPostRequest, String email) {
         return blogPostRepository
                 .existsBlogPostByTitleAndCreatorEmail(
                         blogPostRequest.title(),
-                        blogPostRequest.email())
+                        email)
                 .flatMap(exists -> {
                     if(exists){
                         return Mono.error(
@@ -46,14 +47,14 @@ public class BlogPostServiceImpl implements IBlogPostService {
                                         blogPostRequest.title(),
                                         blogPostRequest.content(),
                                         IDateTimeCreator.createDateTime(),
-                                        blogPostRequest.email(),
+                                        email,
                                         stream(blogPostRequest.tags())
                                                 .map(tags -> Tags.valueOf(tags.toUpperCase()))
                                                 .collect(Collectors.toSet())))
-                                .map(blogPost -> new BlogPostRequest(
+                                .map(blogPost -> new BlogPostResponse(
                                         blogPost.getTitle(),
                                         blogPost.getContent(),
-                                        blogPostRequest.email(),
+                                        email,
                                         blogPost.getTags().stream()
                                                 .map(Enum::toString)
                                                 .toArray(String[]::new)))
@@ -66,7 +67,7 @@ public class BlogPostServiceImpl implements IBlogPostService {
     }
 
     @Override
-    public Mono<BlogPostRequest> getBlogPostByTitleAndCreatorEmail(String title, String email) {
+    public Mono<BlogPostResponse> getBlogPostByTitleAndCreatorEmail(String title, String email) {
         return blogPostRepository
                 .existsBlogPostByTitleAndCreatorEmail(title,email)
                 .flatMap(exists -> {
@@ -76,7 +77,7 @@ public class BlogPostServiceImpl implements IBlogPostService {
                     }else {
                         return blogPostRepository
                                 .findByTitleAndCreatorEmail(title,email)
-                                .map(request -> new BlogPostRequest(
+                                .map(request -> new BlogPostResponse(
                                         request.getTitle(),
                                         request.getContent(),
                                         email,
@@ -90,10 +91,10 @@ public class BlogPostServiceImpl implements IBlogPostService {
     }
 
     @Override
-    public Flux<BlogPostRequest> getAllBlogPosts() {
+    public Flux<BlogPostResponse> getAllBlogPosts() {
         return blogPostRepository
                 .findAll()
-                .map(blogPost -> new BlogPostRequest(
+                .map(blogPost -> new BlogPostResponse(
                         blogPost.getTitle(),
                         blogPost.getContent(),
                         blogPost.getCreatorEmail(),
@@ -105,13 +106,13 @@ public class BlogPostServiceImpl implements IBlogPostService {
     }
 
     @Override
-    public Flux<BlogPostRequest> getAllBlogPostsWithTags(String[] tags) {
+    public Flux<BlogPostResponse> getAllBlogPostsWithTags(String[] tags) {
         return blogPostRepository
                 .findAllByTags(stream(tags)
                         .map(mytags ->
                                 Tags.valueOf(mytags.toUpperCase()))
                         .collect(Collectors.toSet()))
-                .map(response -> new BlogPostRequest(
+                .map(response -> new BlogPostResponse(
                         response.getTitle(),
                         response.getContent(),
                         response.getCreatorEmail(),
@@ -123,7 +124,7 @@ public class BlogPostServiceImpl implements IBlogPostService {
     }
 
     @Override
-    public Mono<BlogPostRequest> updateBlogPost(BlogPostRequestUpdate blogPostRequest, String creatorEmail) {
+    public Mono<BlogPostResponse> updateBlogPost(BlogPostRequestUpdate blogPostRequest, String creatorEmail) {
         return blogPostRepository
                 .existsBlogPostByTitleAndCreatorEmail(
                         blogPostRequest.oldTitle(),
@@ -147,7 +148,7 @@ public class BlogPostServiceImpl implements IBlogPostService {
 
                                     return blogPostRepository
                                             .save(update)
-                                            .map(response -> new BlogPostRequest(
+                                            .map(response -> new BlogPostResponse(
                                                     response.getTitle(),
                                                     response.getContent(),
                                                     response.getCreatorEmail(),

@@ -5,8 +5,10 @@ import com.salenaluu.portfolio.blogpost.repository.IBlogPostRepository;
 import com.salenaluu.portfolio.blogpost.service.BlogPostServiceImpl;
 import com.salenaluu.portfolio.blogpost.utils.enums.Tags;
 import com.salenaluu.portfolio.blogpost.utils.interfaces.IDateTimeCreator;
+import com.salenaluu.portfolio.blogpost.utils.interfaces.IUserManagement;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequest;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequestUpdate;
+import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +40,8 @@ import static org.springframework.security.test.web.reactive.server.SecurityMock
 class BlogPostControllerTest {
     @MockBean
     IBlogPostRepository blogPostRepository;
-
+    @MockBean
+    IUserManagement userManagement;
     @Autowired
     WebTestClient webTestClient;
 
@@ -54,6 +57,11 @@ class BlogPostControllerTest {
             Set.of(Tags.FUNNY));
 
     BlogPostRequest blogPostRequest = new BlogPostRequest(
+            "Scooby is Back!",
+            "No way! And shaggy too ?",
+            new String[]{"FUNNY"});
+
+    BlogPostResponse blogPostResponse = new BlogPostResponse(
             "Scooby is Back!",
             "No way! And shaggy too ?",
             "test@example.com",
@@ -177,6 +185,8 @@ class BlogPostControllerTest {
                 .thenReturn(Mono.just(true));
         when(blogPostRepository.findByTitleAndCreatorEmail(anyString(),anyString()))
                 .thenReturn(Mono.just(blogPost));
+        when(userManagement.currentEmail())
+                .thenReturn(Mono.just(blogPost.getCreatorEmail()));
 
         webTestClient
                 .mutateWith(mockOpaqueToken())
@@ -198,6 +208,8 @@ class BlogPostControllerTest {
     void should_throw_exception_if_BlogPost_not_found_by_getBlogPostByTitleAndCreatorEmail() {
         when(blogPostRepository.existsBlogPostByTitleAndCreatorEmail(anyString(),anyString()))
                 .thenReturn(Mono.just(false));
+        when(userManagement.currentEmail())
+                .thenReturn(Mono.just(blogPost.getCreatorEmail()));
 
         webTestClient
                 .mutateWith(mockOpaqueToken())
@@ -216,7 +228,8 @@ class BlogPostControllerTest {
     void should_throw_exception_if_title_is_wrong_or_email_is_null_by_getBlogPostByTitleAndCreatorEmail() {
         when(blogPostRepository.existsBlogPostByTitleAndCreatorEmail(anyString(),anyString()))
                 .thenReturn(Mono.empty());
-
+        when(userManagement.currentEmail())
+                .thenReturn(Mono.just(blogPost.getCreatorEmail()));
         webTestClient
                 .mutateWith(mockOpaqueToken())
                 .get()
