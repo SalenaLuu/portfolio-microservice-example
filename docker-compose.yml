@@ -63,7 +63,7 @@ services:
       - api-gateway
       - eureka-server
     environment:
-      - eureka.client.serviceurl.defaultzone=http://eureka-service:8761/eureka
+      - eureka.client.serviceurl.defaultzone=http://eureka-server:8761/eureka
       - spring.zipkin.base-url=http://zipkin-server:9411
   # <========== Mongo ==========>
   mongo:
@@ -83,7 +83,7 @@ services:
   eureka-server:
     build: .
     image: eureka-server:latest
-    container_name: eureka-service_container
+    container_name: eureka-server_container
     mem_reservation: 700m # Memories limit
     ports:
       - "8761:8761"
