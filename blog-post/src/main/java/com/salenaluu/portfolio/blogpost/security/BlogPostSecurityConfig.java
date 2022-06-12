@@ -2,7 +2,6 @@ package com.salenaluu.portfolio.blogpost.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -17,6 +16,8 @@ public class BlogPostSecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http.csrf().disable()
                 .authorizeExchange()
+                .pathMatchers("/","/v3/api-docs/**", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html")
+                    .permitAll()
                 .anyExchange().authenticated()
                 .and()
                 .oauth2ResourceServer()
