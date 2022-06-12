@@ -1,39 +1,7 @@
-server:
-  port: 8765
-
 spring:
   application:
-    name: gateway
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    baseUrl: http://localhost:9411/
+    name: api-gateway
+  config:
+    import: "optional:configserver:http://localhost:8888"
 
-  cloud:
-    gateway:
-      routes:
-        - id: BlogPostController
-          uri: lb://blog-post
-          predicates:
-            - Path=/api/v1/blogpost**
-        - id: NotificationController
-          uri: lb://notification
-          predicates:
-            - Path=/api/v1/mail/**
-        - id: UserManagementController
-          uri: lb://user-management
-          predicates:
-            - Path=/api/v1/userdata**
-
-okta:
-  oauth2:
-    issuer: https://dev-58955540.okta.com/oauth2/default
-    client-id: 0oa5863m10Y6kLUKC5d7
-    client-secret: a6EMP-wt6rBOdCjxWNxcFKQPijkHeJqViTKER3yv
-    scopes: openid, profile, email
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+service.version: 1.0
