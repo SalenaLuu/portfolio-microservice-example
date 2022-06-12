@@ -12,6 +12,7 @@ services:
     networks:
       - portfolio
     depends_on:
+      - config-server
       - eureka-server
     environment:
       - eureka.client.serviceurl.defaultzone=http://eureka-server:8761/eureka
@@ -27,6 +28,7 @@ services:
     networks:
       - portfolio
     depends_on:
+      - config-server
       - eureka-server
       - mongo
     environment:
@@ -44,8 +46,9 @@ services:
     networks:
       - portfolio
     depends_on:
-      - api-gateway
+      - config-server
       - eureka-server
+      - api-gateway
     environment:
       - eureka.client.serviceurl.defaultzone=http://eureka-server:8761/eureka
       - spring.zipkin.base-url=http://zipkin-server:9411
@@ -60,8 +63,9 @@ services:
     networks:
       - portfolio
     depends_on:
-      - api-gateway
+      - config-server
       - eureka-server
+      - api-gateway
     environment:
       - eureka.client.serviceurl.defaultzone=http://eureka-server:8761/eureka
       - spring.zipkin.base-url=http://zipkin-server:9411
@@ -80,13 +84,26 @@ services:
     ports:
       - "27017:27017"
   # <========== Server ==========>
+  # <- Eureka ->
   eureka-server:
     build: .
     image: eureka-server:latest
     container_name: eureka-server_container
     mem_reservation: 700m # Memories limit
+    depends_on:
+      - config-server
     ports:
       - "8761:8761"
+    networks:
+      - portfolio
+  # <- Config ->
+  config-server:
+    build: .
+    image: config-server:latest
+    container_name: config-server_container
+    mem_reservation: 300m
+    ports:
+      - "8888:8888"
     networks:
       - portfolio
   # <========== Zipkin ==========>
@@ -100,9 +117,24 @@ services:
     networks:
       - portfolio
     restart: on-failure
+  # <========== Swagger UI ==========>
+  swagger-ui:
+    build: .
+    image: swaggerapi/swagger-ui:latest
+    mem_reservation: 700m
+    container_name: swagger-ui_container
+    ports:
+      - "9999:9999"
+    depends_on:
+      - api-gateway
+    networks:
+      - portfolio
+   # volumes:
+      #- ./doc:/usr/share/nginx/html/doc
 
 networks:
   portfolio:
 
 volumes:
   mongodb_data_container:
+ # swagger_ui_data_container:
