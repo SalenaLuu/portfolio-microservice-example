@@ -40,28 +40,28 @@ public class BlogPostServiceImpl implements IBlogPostService {
                     if(exists){
                         return Mono.error(
                                 new BadRequestException(valueOf(BLOG_POST_ALREADY_EXISTS)));
-                    }else {
-                        return blogPostRepository
-                                .save(new BlogPost(
-                                        UUID.randomUUID(),
-                                        blogPostRequest.title(),
-                                        blogPostRequest.content(),
-                                        IDateTimeCreator.createDateTime(),
-                                        email,
-                                        stream(blogPostRequest.tags())
-                                                .map(tags -> Tags.valueOf(tags.toUpperCase()))
-                                                .collect(Collectors.toSet())))
-                                .map(blogPost -> new BlogPostResponse(
-                                        blogPost.getTitle(),
-                                        blogPost.getContent(),
-                                        email,
-                                        blogPost.getTags().stream()
-                                                .map(Enum::toString)
-                                                .toArray(String[]::new)))
-                                .switchIfEmpty(Mono.error(
-                                        new BadRequestException(valueOf(REQUESTED_MODEL_INVALID))))
-                                .log();
                     }
+                    return blogPostRepository
+                            .save(new BlogPost(
+                                    UUID.randomUUID(),
+                                    blogPostRequest.title(),
+                                    blogPostRequest.content(),
+                                    IDateTimeCreator.createDateTime(),
+                                    email,
+                                    stream(blogPostRequest.tags())
+                                            .map(tags -> Tags.valueOf(tags.toUpperCase()))
+                                            .collect(Collectors.toSet())))
+                            .map(blogPost -> new BlogPostResponse(
+                                    blogPost.getTitle(),
+                                    blogPost.getContent(),
+                                    email,
+                                    blogPost.getTags().stream()
+                                            .map(Enum::toString)
+                                            .toArray(String[]::new)))
+                            .switchIfEmpty(Mono.error(
+                                    new BadRequestException(valueOf(REQUESTED_MODEL_INVALID))))
+                            .log();
+
                 }).switchIfEmpty(Mono.error(
                         new BadRequestException(valueOf(REQUEST_NOT_EXCEPTED))));
     }
@@ -74,18 +74,17 @@ public class BlogPostServiceImpl implements IBlogPostService {
                     if(!exists){
                         return Mono.error(
                                 new NotFoundException(valueOf(BLOG_POST_NOT_FOUND)));
-                    }else {
-                        return blogPostRepository
-                                .findByTitleAndCreatorEmail(title,email)
-                                .map(request -> new BlogPostResponse(
-                                        request.getTitle(),
-                                        request.getContent(),
-                                        email,
-                                        request.getTags().stream()
-                                                .map(Enum::toString)
-                                                .toArray(String[]::new)))
-                                .log();
                     }
+                    return blogPostRepository
+                            .findByTitleAndCreatorEmail(title,email)
+                            .map(request -> new BlogPostResponse(
+                                    request.getTitle(),
+                                    request.getContent(),
+                                    email,
+                                    request.getTags().stream()
+                                            .map(Enum::toString)
+                                            .toArray(String[]::new)))
+                            .log();
                 }).switchIfEmpty(Mono.error(
                         new BadRequestException(valueOf(REQUEST_NOT_EXCEPTED))));
     }
@@ -132,32 +131,31 @@ public class BlogPostServiceImpl implements IBlogPostService {
                 .flatMap(exists -> {
                     if (!exists){
                         return Mono.error(new BadRequestException(valueOf(BLOG_POST_NOT_FOUND)));
-                    }else {
-                        Mono<BlogPost> requestedBlogPost = blogPostRepository
-                                .findByTitleAndCreatorEmail(
-                                        blogPostRequest.oldTitle(),
-                                        creatorEmail);
-                        return requestedBlogPost
-                                .flatMap(update -> {
-                                    update.setTitle(blogPostRequest.newTitle());
-                                    update.setContent(blogPostRequest.content());
-                                    update.setPublishedAt(IDateTimeCreator.createDateTime());
-                                    update.setTags(stream(blogPostRequest.tags())
-                                            .map(request -> Tags.valueOf(request.toUpperCase()))
-                                            .collect(Collectors.toSet()));
-
-                                    return blogPostRepository
-                                            .save(update)
-                                            .map(response -> new BlogPostResponse(
-                                                    response.getTitle(),
-                                                    response.getContent(),
-                                                    response.getCreatorEmail(),
-                                                    response.getTags().stream()
-                                                            .map(Enum::toString)
-                                                            .toArray(String[]::new)))
-                                            .log();
-                                });
                     }
+                    Mono<BlogPost> requestedBlogPost = blogPostRepository
+                            .findByTitleAndCreatorEmail(
+                                    blogPostRequest.oldTitle(),
+                                    creatorEmail);
+                    return requestedBlogPost
+                            .flatMap(update -> {
+                                update.setTitle(blogPostRequest.newTitle());
+                                update.setContent(blogPostRequest.content());
+                                update.setPublishedAt(IDateTimeCreator.createDateTime());
+                                update.setTags(stream(blogPostRequest.tags())
+                                        .map(request -> Tags.valueOf(request.toUpperCase()))
+                                        .collect(Collectors.toSet()));
+
+                                return blogPostRepository
+                                        .save(update)
+                                        .map(response -> new BlogPostResponse(
+                                                response.getTitle(),
+                                                response.getContent(),
+                                                response.getCreatorEmail(),
+                                                response.getTags().stream()
+                                                        .map(Enum::toString)
+                                                        .toArray(String[]::new)))
+                                        .log();
+                            });
                 });
     }
 
@@ -169,11 +167,11 @@ public class BlogPostServiceImpl implements IBlogPostService {
                     if (!exists){
                         return Mono.error(
                                 new BadRequestException(valueOf(BLOG_POST_NOT_FOUND)));
-                    }else {
-                        return blogPostRepository
-                                .deleteBlogPostByTitleAndCreatorEmail(title,email)
-                                .log();
                     }
+                    return blogPostRepository
+                            .deleteBlogPostByTitleAndCreatorEmail(title,email)
+                            .log();
+
                 }).log();
     }
 }
