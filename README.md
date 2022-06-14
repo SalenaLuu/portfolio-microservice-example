@@ -11,7 +11,7 @@
 
 ### We will use this Architecture to build our project...
 
-![Shows a Microservice Architecture]("assets/images/Architecture_small.png")
+![Shows a Microservice Architecture]("../assets/images/Architecture_small.png")
 
 
 > Let's have a look to our Services...
