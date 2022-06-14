@@ -1,6 +1,6 @@
 # Jr. Portfolio-Microservice-Example
 
-> This Project demonstrates a simple example of a **"Microservice"** Pattern with Spring Boot and Maven.
+> This Project demonstrates a simple example of a **"Microservice"** Pattern with ***Spring Boot*** and ***Maven***.
 > To implement security in this project we use **"Okta"**. We will use a **"JWT-token"** to verify us in our
 > user-management service and get our **"access-token"**. For our **"blog-Post"** and **"notification"** service,
 > we will use an **"opaque-token"**. The idea is to create a **"blog-post"** service, 
