@@ -99,9 +99,9 @@ For an update, we must specify the request a little more, so we create an extra 
 When we get a response from our API, we need also a special record....
 
     public record BlogPostResponse(String title,
-                               String content,
-                               String email,
-                               String[] tags){}
+                                   String content,
+                                   String email,
+                                   String[] tags){}
 
 ### In the end, we will use a docker-compose.yml to containerize our application
 
