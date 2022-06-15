@@ -100,7 +100,7 @@ Now we have a good base to start...
 
 Add some properties to our <mark>**application.yml**</mark> file
 
-> Make sure you added a path to our **Database** MongoDB
+> Note: Make sure you added a path to our **Database** MongoDB
 
     server:
         port: 8080
@@ -177,7 +177,7 @@ If we don't find what we are looking for create...
     }
 
 
-> If you like, create an enum with your messages
+> Note: If you like, create an enum with your messages
 
 It could be something like this....
 
@@ -204,8 +204,37 @@ In this project we use a custom tool to show us the created Date.
         }
     }
 
-### Note
-> Don't forget to create some **Tests** for our service **AssertJ** helps us to write well organized and good tests !
+***
+##  Test Driven Development 🍪
+
+What is it? And what can we expect from that approach?
+
+Some Benefits of Test Driven Development (short TDD) :
++ Test Driven Development gives us a high code quality and confidence. 
++ Find bugs early in the development process
++ More consistent and accurate, than manually testing
++ They are fast!
+
+> Note: Keep always your code readable!
+
+> Note: When we write Unit Tests make sure that you keep the Tests isolated from the rest of the program.
+
+With this Circle we can understand the logic a little bit more behind the idea...
+
+
+![Images showes a Circle of the TDD Pattern](assets/images/TDD_Cirle.jpeg)
+
+### Laws of TDD 
+
++ § 1. You are not allowed to write any production code unless it is to make a failing unit test pass
++ § 2. You are not allowed to write any more of a unit test than is sufficient to fail and compilation
+    failures are failures!
++ § 3. You are not allowed to write any more production code than is sufficient to pass the one failing unit test.
+
+> Note: Don't forget to add **AssertJ** to our services. It helps us to write well organized and good tests!
+***
+
+### Test-Examples:
 
 Here are a test cases example for our Repository....
 
@@ -549,7 +578,7 @@ We also **"@EnableEurekaClient"** to our **"blog-post"** service...
         }
     }
 
-> You can run the two services and have a look on http://localhost:8761/eureka , if the registry is working.
+> Note: You can run the two services and have a look on http://localhost:8761/eureka , if the registry is working.
 
 ## API Gateway 🍪
 
@@ -610,7 +639,7 @@ Make sure that you also added **"@EnableEurekaClient"** ....
     
     }
 
-> Now we can reach our blog-post service on http://localhost:8765/api/v1/blogpost
+> Note: Now we can reach our blog-post service on http://localhost:8765/api/v1/blogpost
 
 ## Config Server 🍪
 
