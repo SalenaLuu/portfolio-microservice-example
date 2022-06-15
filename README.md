@@ -506,7 +506,7 @@ Make sure you added **"@EnableEurekaServer"**...
     
     }
 
-add the following properties to your Eureka application.yml file.
+add the following properties to your Eureka application.yml file...
 
     server:
         port: 8761
@@ -516,7 +516,7 @@ add the following properties to your Eureka application.yml file.
         register-with-eureka: false
         fetch-registry: false
 
-and to our **blog-post** service 
+and to our **blog-post** service application.yml file...
 
     eureka:
         client:
@@ -525,7 +525,7 @@ and to our **blog-post** service
         instance:
             instance-id: ${spring.application.name}:${random.uuid}
 
-We also **"@EnableEurekaClient"** to our **"blog-post"** service.
+We also **"@EnableEurekaClient"** to our **"blog-post"** service...
 
     @EnableEurekaClient
     @SpringBootApplication
