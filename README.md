@@ -537,6 +537,103 @@ We also **"@EnableEurekaClient"** to our **"blog-post"** service...
 
 > You can run the two services and have a look on http://localhost:8761/eureka , if the registry is working.
 
+## API Gateway
+
+After we created our **"blog-post"** service and **"eureka-server"**, we'll create a gateway to unify our ports.
+For that we choose the port http://localhost:8765 ....
+
+### Dependencies
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-gateway</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+
+> Note: You can also add some tools like lombok or devtools to each service...
+
+### Configuration
+Add some properties to our <mark>**application.yml**</mark> file...
+
+    server:
+        port: 8765
+
+    spring:
+        cloud:
+            gateway:
+                discovery:
+                    locator:
+                        enabled: true
+                routes:
+                    - id: BlogPostController
+                      uri: lb://blog-post
+                      predicates:
+                        - Path=/api/v1/blogpost**
+                        - Path=/api/v1/blogpost/**
+    eureka:
+        client:
+            service-url:
+                defaultZone: http://localhost:8761/eureka
+
+Make sure that you also added **"@EnableEurekaClient"** ....
+
+    @EnableEurekaClient
+    @SpringBootApplication
+    public class ApiGatewayApplication {
+    
+        public static void main(String[] args) {
+            SpringApplication.run(ApiGatewayApplication.class, args);
+        }
+    
+    }
+
+> Now we can reach our blog-post service on http://localhost:8765/api/v1/blogpost
+
+## Config Server
+
+To keep our <mark>**application.yml**</mark> files well organized, we use a **Config-Server**. By adding a **Config Server** to
+our **Microservice**, our services will fetch the needed **application.yml** files to they service.
+
+### Dependencies
+We only need one dependency here...
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-config-server</artifactId>
+    </dependency>
+
+### Main-Class
+Don't forget to add **"@EnableConfigServer"** to the Main-Class
+
+    @EnableConfigServer
+    @SpringBootApplication
+    public class ConfigServerApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(ConfigServerApplication.class, args);
+        }
+    }
+
+### Config Folder
+Create a **config** folder in the **resources** folder and refactor the "application.yml" files to this folder. 
+Make sure you **rename** the application.yml files and the name matches the service like ->  **api-gateway.yml**
+
+### More Dependencies for our Services
+Add the following dependency to our services (blog-post,eureka and api-gateway)...
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+
 ## Docker Compose
 
 ### In the end, we will use a <mark>docker-compose.yml</mark> to containerize our application
