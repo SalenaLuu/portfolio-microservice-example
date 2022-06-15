@@ -1,12 +1,11 @@
 # Jr. Portfolio-Microservice-Example
 
 > This Project demonstrates a simple example of a **"Microservice"** Pattern with ***Spring Boot*** and ***Maven***.
-> To implement security in this project we use **"Okta"**. We will use a **"JWT-token"** to verify us in our
-> we will use an **"opaque-token"**. The idea is to create a **"blog-post"** service, 
-> where people can **CRUD** (*Create-Read-Update-Delete*) blog-post's. We connect this service to a **"NoSQL"** 
-> Database **"MongoDB"**. To play around with **"Amazon Webservices"**, we want to implement a small 
-> **"notification"** service with **"SNS"** and **"SQS"**, where a user can **"subscribe"** and **"publish"** messages 
-> to they subscribers.
+> To implement security in this project, we will use **"Okta"** with a **"JWT-token"** and an **"opaque-token"**. 
+> The idea is to create a **"blog-post"** service, where people can **CRUD** (*Create-Read-Update-Delete*) blog-post's. 
+> We connect this service to a **"NoSQL"** Database **"MongoDB"**. To play around with **"Amazon Webservices"**, 
+> we want to implement a small **"notification"** service with **"SNS"** and **"SQS"**, where a user 
+> can **"subscribe"** and **"publish"** messages to they subscribers.
 
 ### We will use this Architecture to build our project...
 
@@ -192,37 +191,37 @@ When we get a response from our API, we need also a special record....
     #<========== Server ==========>
     #<- Eureka ->
         eureka-server:
-        build: .
-        image: eureka-server:latest
-        container_name: eureka-server_container
-        mem_reservation: 700m # Memories limit
-        depends_on:
-            - config-server
-        ports:
-            - "8761:8761"
-        networks:
-            - portfolio
+            build: .
+            image: eureka-server:latest
+            container_name: eureka-server_container
+            mem_reservation: 700m # Memories limit
+            depends_on:
+                - config-server
+            ports:
+                - "8761:8761"
+            networks:
+                - portfolio
     #<- Config ->
         config-server:
-        build: .
-        image: config-server:latest
-        container_name: config-server_container
-        mem_reservation: 300m
-        ports:
-            - "8888:8888"
-        networks:
-            - portfolio
+            build: .
+            image: config-server:latest
+            container_name: config-server_container
+            mem_reservation: 300m
+            ports:
+                - "8888:8888"
+            networks:
+                - portfolio
     #<========== Zipkin ==========>
         zipkin-server:
-        build: .
-        image: openzipkin/zipkin:latest
-        mem_reservation: 300m
-        container_name: zipkin_container
-        ports:
-            - "9411:9411"
-        networks:
-            - portfolio
-        restart: on-failure
+            build: .
+            image: openzipkin/zipkin:latest
+            mem_reservation: 300m
+            container_name: zipkin_container
+            ports:
+                - "9411:9411"
+            networks:
+                - portfolio
+            restart: on-failure
     #<========== Swagger UI ==========>
         swagger-ui:
             build: .
