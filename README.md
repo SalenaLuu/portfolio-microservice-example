@@ -259,7 +259,7 @@ Here are a test cases example for our Controller....
                 .findAll();
     }
 
-More test scenarios you can find in this repository....
+More test scenarios and further details you can find in this repository....
 
 ### Service 
 
@@ -479,6 +479,64 @@ To access to our API we need a RestController with some endpoints...
             return blogPostServiceImpl.deleteBlogPostByTitleAndCreatorEmail(title,creatorEmail);
         }
     }
+
+## Discovery Server
+
+To register our services we need a Discovery-Server. In our case we'll use Eureka-Server.
+
+Create a new Service with the following dependency
+
+### Dependencies
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+    </dependency>
+
+### Main-class
+Make sure you added **"@EnableEurekaServer"**...
+
+    @EnableEurekaServer
+    @SpringBootApplication
+    public class EurekaServerApplication {
+    
+        public static void main(String[] args) {
+            SpringApplication.run(EurekaServerApplication.class, args);
+        }
+    
+    }
+
+add the following properties to your Eureka application.yml file.
+
+    server:
+        port: 8761
+    
+    eureka:
+        client:
+        register-with-eureka: false
+        fetch-registry: false
+
+and to our **blog-post** service 
+
+    eureka:
+        client:
+            service-url:
+                defaultZone: http://localhost:8761/eureka
+        instance:
+            instance-id: ${spring.application.name}:${random.uuid}
+
+We also **"@EnableEurekaClient"** to our **"blog-post"** service.
+
+    @EnableEurekaClient
+    @SpringBootApplication
+    public class BlogPostApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(BlogPostApplication.class, args);
+        }
+    }
+
+> You can run the two services and have a look on http://localhost:8761/eureka , if the registry is working.
+
 ### In the end, we will use a <mark>docker-compose.yml</mark> to containerize our application
 
     version: '3.9'
