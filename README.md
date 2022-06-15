@@ -43,14 +43,21 @@ Let's have a look to our Services...
 
 ### Dependencies 
 
-Use Lombok and Spring Validation to simplify the handling.
+Use Lombok, Devtools and Spring Validation to simplify the handling with the classes.
 
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <optional>true</optional>
     </dependency>
-
+    
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope>
+        <optional>true</optional>
+    </dependency>
+    
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-validation</artifactId>
@@ -78,30 +85,41 @@ we need the following dependency.
         <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
     </dependency>
 
-### Records
-Create also some **records** to speak just with this information, what is really needed from backend to our consumer...
+For our Testing purpose, we need also an additional tool, who makes TDD and BDD easier to read and write.
 
-For our normal Requests like to **Create** a BlogPost use this...
+    <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>{Use the Latest Version}</version> 
+        <scope>test</scope>
+    </dependency>
+
+Now we have a good base to start...
+### Records
+Create also some **records** to retrieve only this information, what is really needed for our consumer...
+
+For our normal Requests like to **create** a BlogPost use this...
 
     public record BlogPostRequest(String title,
                                   String content,
                                   String[] tags){}
 
-For an update, we must specify the request a little more, so we create an extra record for that.
+For an **update**, we must specify the request a little more, so we create an extra record for that.
 
     public record BlogPostRequestUpdate(String oldTitle,
                                         String newTitle,
                                         String content,
                                         String[] tags) {}
 
-When we get a response from our API, we need also a special record....
+When we get a response from our API, we would like to have our blog-post creators email address, 
+for that we need a special record....
 
     public record BlogPostResponse(String title,
                                    String content,
                                    String email,
                                    String[] tags){}
 
-### In the end, we will use a docker-compose.yml to containerize our application
+### In the end, we will use a <mark>docker-compose.yml</mark> to containerize our application
 
     version: '3.9'
 
