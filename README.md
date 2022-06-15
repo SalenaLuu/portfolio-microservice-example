@@ -100,6 +100,8 @@ Now we have a good base to start...
 
 Add some properties to our <mark>**application.yml**</mark> file
 
+> Make sure you added a path to our **Database** MongoDB
+
     server:
         port: 8080
 
@@ -107,12 +109,7 @@ Add some properties to our <mark>**application.yml**</mark> file
         data:
             mongodb:
                 uri: mongodb://localhost:27017/portfolio
-    eureka:
-        client:
-            service-url:
-                defaultZone: http://localhost:8761/eureka
-        instance:
-            instance-id: ${spring.application.name}:${random.uuid}
+
 ### Records
 
 Create also some **records** to retrieve only this information, what is really needed for our consumer...
