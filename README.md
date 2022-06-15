@@ -1,4 +1,4 @@
-# Jr. Portfolio-Microservice-Example
+# 🍓 Jr. Portfolio-Microservice-Example 🍓
 
 > This Project demonstrates a simple example of a **"Microservice"** Pattern with ***"Spring Boot"*** and ***"Maven"***.
 > To implement security in this project, we will use **"Okta"** with a **"JWT-Token"** and an **"Opaque-Token"**. 
@@ -14,7 +14,7 @@
 
 Let's have a look to our Services...
 
-## Blog Post Service
+## Blog Post Service 🍪
 
 ### Blogpost Service Model
     @Data
@@ -96,7 +96,7 @@ For our Testing purpose, we need also an additional tool, who makes TDD and BDD 
 
 Now we have a good base to start...
 
-### Configuration
+### Configuration 
 
 Add some properties to our <mark>**application.yml**</mark> file
 
@@ -494,7 +494,7 @@ To access to our API we need a RestController with some endpoints...
         }
     }
 
-## Discovery Server
+## Discovery Server 🍪
 
 To register our services we need a Discovery-Server. In our case we'll use Eureka-Server.
 
@@ -551,7 +551,7 @@ We also **"@EnableEurekaClient"** to our **"blog-post"** service...
 
 > You can run the two services and have a look on http://localhost:8761/eureka , if the registry is working.
 
-## API Gateway
+## API Gateway 🍪
 
 After we created our **"blog-post"** service and **"eureka-server"**, we'll create a gateway to unify our ports.
 For that we choose the port http://localhost:8765 ....
@@ -612,7 +612,7 @@ Make sure that you also added **"@EnableEurekaClient"** ....
 
 > Now we can reach our blog-post service on http://localhost:8765/api/v1/blogpost
 
-## Config Server
+## Config Server 🍪
 
 To keep our <mark>**application.yml**</mark> files well organized, we use a **Config-Server**. By adding a **Config Server** to
 our **Microservice**, our services will fetch the needed **application.yml** files to they service.
@@ -648,14 +648,14 @@ Add the following dependency to our services (blog-post,eureka and api-gateway).
         <artifactId>spring-cloud-starter-config</artifactId>
     </dependency>
 
-## Short Overview what we already created...
+## Short Overview what we already created... 🍪
 
 > Now we've created already successfully a **Microservice**. To make it more **interesting** and make it **save**,
 > we'll extend it ! This is a big benefit of a **Microservice-Architecture** rather than a Monolithic-Architecture. 
 > We can easily extend our **Microservice**, by just adding more services to our **Discovery-Server**.
 
 ![Shows a short Overview of our current Microservice-Status](assets/images/Overview_small.PNG)
-## Docker Compose
+## Docker Compose 🍪
 
 ### In the end, we will use a <mark>docker-compose.yml</mark> to containerize our application
 
@@ -797,7 +797,7 @@ Add the following dependency to our services (blog-post,eureka and api-gateway).
     volumes:
         mongodb_data_container:
 
-### Resources:
+## Resources 🍪
 
 **Other**
 + [Spring Boot Documentation 8.2. Reactive Web Applications](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#web.reactive)
