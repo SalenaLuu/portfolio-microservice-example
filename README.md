@@ -191,7 +191,7 @@ In this project we use a custom tool to show us the created Date.
     }
 
 ### Note
-> Don't forget to create some **Tests** for our service **AssertJ** helps you write some good tests !
+> Don't forget to create some **Tests** for our service **AssertJ** helps us to write well organized and good tests !
 ### Service 
 
 To handle our request well organized we create a Service-Interface and implement it to 
