@@ -189,9 +189,12 @@ In this project we use a custom tool to show us the created Date.
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
     }
+
+### Note
+> Don't forget to create some **Tests** for our service **AssertJ** helps you write some good tests !
 ### Service 
 
-To handle our request well organized we create an Service-Interface and implement it to 
+To handle our request well organized we create a Service-Interface and implement it to 
 a class.
 
     public interface IBlogPostService {
