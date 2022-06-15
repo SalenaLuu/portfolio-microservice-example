@@ -96,6 +96,23 @@ For our Testing purpose, we need also an additional tool, who makes TDD and BDD 
 
 Now we have a good base to start...
 
+### Configuration
+
+Add some properties to our <mark>**application.yml**</mark> file
+
+    server:
+        port: 8080
+
+    spring:
+        data:
+            mongodb:
+                uri: mongodb://localhost:27017/portfolio
+    eureka:
+        client:
+            service-url:
+                defaultZone: http://localhost:8761/eureka
+        instance:
+            instance-id: ${spring.application.name}:${random.uuid}
 ### Records
 
 Create also some **records** to retrieve only this information, what is really needed for our consumer...
