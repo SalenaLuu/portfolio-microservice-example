@@ -537,6 +537,8 @@ We also **"@EnableEurekaClient"** to our **"blog-post"** service...
 
 > You can run the two services and have a look on http://localhost:8761/eureka , if the registry is working.
 
+## Docker Compose
+
 ### In the end, we will use a <mark>docker-compose.yml</mark> to containerize our application
 
     version: '3.9'
