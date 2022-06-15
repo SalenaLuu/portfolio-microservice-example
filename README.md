@@ -192,6 +192,75 @@ In this project we use a custom tool to show us the created Date.
 
 ### Note
 > Don't forget to create some **Tests** for our service **AssertJ** helps us to write well organized and good tests !
+
+Here are a test cases example for our Repository....
+
+        @Test
+        @DisplayName("should retrieve BlogPost by findByTitleAndCreatorEmail() ")
+        void should_retrieve_BlogPost_by_findByTitleAndCreatorEmail() {
+            Mono<BlogPost> requestedBlogPost =
+                    IBlogPostRepository.findByTitleAndCreatorEmail(
+                            "The Weather Girls in New York City",
+                            "soul-sisters@gmail.com");
+    
+            StepVerifier
+                    .create(requestedBlogPost)
+                    .assertNext(
+                            check -> {
+                                assertThat(check)
+                                        .isNotNull();
+                                assertThat(check.getTitle())
+                                        .isEqualTo("The Weather Girls in New York City");
+                                assertThat(check.getCreatorEmail())
+                                        .isEqualTo("soul-sisters@gmail.com");
+                            })
+                    .verifyComplete();
+    }
+
+Here are a test cases example for our Service....
+
+    @Test
+    @DisplayName("should createBlockPost()")
+    void should_createBlockPost() {
+        given(blogPostRepository.existsBlogPostByTitleAndCreatorEmail(anyString(),anyString()))
+        .willReturn(Mono.just(false));
+        given(blogPostRepository.save(any()))
+        .willReturn(Mono.just(blogPost));
+    
+            Mono<BlogPostResponse> requestedBlogPost =
+                    blogPostService.createBlogPost(blogPostRequest,blogPost.getCreatorEmail());
+    
+            StepVerifier
+                    .create(requestedBlogPost)
+                    .assertNext(check -> {
+                        assertThat(check.title())
+                                .isEqualTo("This is the way");
+                        assertThat(check.content())
+                                .isEqualTo("A special sentence with force in it.");})
+                    .verifyComplete();
+    }
+
+Here are a test cases example for our Controller....
+
+    @Test
+    @DisplayName("should getAllBlogPosts()")
+    void should_getAllBlogPosts() {
+        when(blogPostRepository.findAll())
+                .thenReturn(Flux.just(blogPost));
+
+        webTestClient
+                .get()
+                .uri(baseUrl)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+        verify(blogPostRepository,times(1))
+                .findAll();
+    }
+
+More test scenarios you can find in this repository....
+
 ### Service 
 
 To handle our request well organized we create a Service-Interface and implement it to 
