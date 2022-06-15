@@ -650,9 +650,9 @@ Add the following dependency to our services (blog-post,eureka and api-gateway).
 
 ## Short Overview what we already created... 🍪
 
-> Now we've created already successfully a **Microservice**. To make it more **interesting** and make it **save**,
-> we'll extend it ! This is a big benefit of a **Microservice-Architecture** rather than a Monolithic-Architecture. 
-> We can easily extend our **Microservice**, by just adding more services to our **Discovery-Server**.
+Now we've created already successfully a **Microservice**. To make it more **interesting** and make it **save**,
+we'll extend it ! This is a big benefit of a **Microservice-Architecture** rather than a Monolithic-Architecture. 
+We can easily extend our **Microservice**, by just adding more services to our **Discovery-Server**.
 
 ![Shows a short Overview of our current Microservice-Status](assets/images/Overview_small.PNG)
 ## Docker Compose 🍪
