@@ -234,6 +234,18 @@ With this Circle we can understand the logic a little bit more behind the idea..
 > Note: Don't forget to add **AssertJ** to our services. It helps us to write well organized and good tests!
 ***
 
+## Continues Integration 🍪
+
+For our CI Pipeline we'll use Semaphore. We want to test our application in an automatic way, before pushing
+it into our master branch in our repository. The Benefit here, is that every change will trigger our configured 
+pipeline, where our application will test some things. Shortly... "We check, if our new added code work's 
+in our application."
+
+> Note:  To see the more details, checkout the .semaphore folder there is a semaphore.yml file, 
+> where we configure our pipeline...
+
+***
+
 ### Test-Examples:
 
 Here are a test cases example for our Repository....
@@ -685,7 +697,7 @@ We can easily extend our **Microservice**, by just adding more services to our *
 
 ![Shows a short Overview of our current Microservice-Status](assets/images/Overview_small.PNG)
 
-## Notification Service
+## Notification Service 🍪
 
 Now we want to create an Amazon Simple Notification Service ([Aws SNS](https://aws.amazon.com/de/sns/)) 
 and connect it to an Amazon Simple Queue Service ([Aws SQS](https://aws.amazon.com/de/sqs/)). 
@@ -830,7 +842,7 @@ Don't forget to add the annotation **"@EnableEurekaClient"** to the Notification
     }
 
 
-## Distributed Tracing 
+## Distributed Tracing  🍪
 
 To measure our service's performance, we use a simple service called "Zipkin". 
 
@@ -867,7 +879,7 @@ Add the following properties to each .yml file...
 
 > Note: We can reach our Zipkin service under http://localhost:9411/
 
-## Spring Security with Okta
+## Okta 🍪
 
 Use the Okta Cli and use the following command...
 
@@ -877,12 +889,17 @@ Use the Okta Cli and use the following command...
 
     okta apps create
 
-+ Call the name "portfolio" 
++ Name "portfolio" 
 + Chose Option 1 for Web
 + Chose Option 2 for Spring boot 
-+ leave for now the default Redirects.
++ Leave for now the default Redirects.
 
+> Note: Don't forget to add our "Trusted Origin" in our Security -> API -> "Trusted Origin" 
+> http://localhost:8765 and http://localhost:8080 enable also CORS.
 
+We will use the Client Id, Client Secret and Client Issuer later in our services...
+
+## User-Management Service 🍪
 
 ## Docker Compose 🍪
 
