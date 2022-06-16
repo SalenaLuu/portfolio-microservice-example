@@ -762,6 +762,15 @@ Add to the <mark>application.yml</mark> file the following dependency...
                         internal:
                             InstanceMetadataServiceResourceFetcher: error
 
+You need to specify again the **Route** to access it with http://localhost:8765
+
+    routes:
+        ....
+        - id: NotificationController
+          uri: lb://notification
+          predicates:
+            - Path=/api/v1/mail/**
+
 ### NotificationConfig class
 
 Create a NotificationConfig class to configure our service. 
@@ -841,7 +850,6 @@ Don't forget to add the annotation **"@EnableEurekaClient"** to the Notification
         }
     }
 
-
 ## Distributed Tracing  🍪
 
 To measure our service's performance, we use a simple service called "Zipkin". 
@@ -861,7 +869,7 @@ We need to add two dependencies in each service
 
 ### Push Zipkin Container
 
-Push the following Container from Dockerhub to our Docker environment...
+Push the following Container from [Dockerhub](https://hub.docker.com/) to our Docker environment...
 
 Just use this command:
 
@@ -900,6 +908,139 @@ Use the Okta Cli and use the following command...
 We will use the Client Id, Client Secret and Client Issuer later in our services...
 
 ## User-Management Service 🍪
+
+We would like to have a small service where, we check into our application via OpenIDConnect and OAuth2.
+So let's create a new service...
+
+### Dependencies
+
+This is our Okta dependency
+
+    <dependency>
+        <groupId>com.okta.spring</groupId>
+        <artifactId>okta-spring-boot-starter</artifactId>
+        <version>2.1.5</version>
+    </dependency>
+
+Add also
+    
+     <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+     <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-sleuth</artifactId>
+    </dependency>
+
+And some tools Lombok and so on.
+
+
+### Configuration
+
+For our .yml file, we need now some special properties...
+
+    okta:
+        oauth2:
+            issuer: ${OKTA_ISSUER}
+            client-id: ${OKTA_CLIENT_ID}
+            client-secret: ${OKTA_CLIENT_SECRET}
+            scopes: openid, profile, email
+
+
+### SecurityConfiguration class
+
+Create a Security Configuration class to this service.
+
+    @EnableWebFluxSecurity
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    public class UserManagementSecurity {
+        @Bean
+        public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http){
+            http
+                .csrf().disable()
+                .authorizeExchange()
+                .anyExchange()
+                .authenticated()
+                .and().oauth2Login()
+                .and().oauth2ResourceServer().jwt();
+                return http.build();
+        }
+    }
+
+### Model
+
+Create a Simple "MyUser" Model-Class
+
+    @Data
+    public class MyUser {
+        private String userName;
+        private String email;
+        private String idToken;
+        private String accessToken;
+    }
+
+### Controller
+
+Creat a RestController to communicate with our API and Okta.
+
+    @RestController
+    @RequestMapping("/api/v1/userdata")
+    public class UserManagementController {
+    
+        @GetMapping
+        public Mono<MyUser> userdata(@AuthenticationPrincipal OidcUser oidcUser,
+                                    @RegisteredOAuth2AuthorizedClient("okta")OAuth2AuthorizedClient client){
+    
+            MyUser myUser = new MyUser();
+    
+            myUser.setUserName(oidcUser.getFullName());
+            myUser.setEmail(oidcUser.getEmail());
+            myUser.setIdToken(oidcUser.getIdToken().getTokenValue());
+            myUser.setAccessToken(client.getAccessToken().getTokenValue());
+            return Mono.just(myUser);
+        }
+    
+        @GetMapping("/email")
+        public Mono<String> currentEmail(@AuthenticationPrincipal OidcUser oidcUser){
+            return Mono.just(oidcUser.getEmail());
+        }
+    }
+
+> Note: Don't forget to write some tests for the classes.
+
+### Main class
+
+Also make sure you configured again our Main-Class by annotating "@EnableEurekaClient"
+    
+    @EnableEurekaClient
+    @SpringBootApplication
+    public class UsermanagementApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(UsermanagementApplication.class, args);
+        }
+    }
+
+You need to specify again the **Route** to access it with http://localhost:8765
+
+    routes:
+        ....
+        - id: UserManagementController
+          uri: lb://user-management
+          predicates:
+             - Path=/api/v1/userdata**
 
 ## Docker Compose 🍪
 
