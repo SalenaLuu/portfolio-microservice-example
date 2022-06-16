@@ -680,10 +680,155 @@ Add the following dependency to our services (blog-post,eureka and api-gateway).
 ## Short Overview what we already created... 🍪
 
 Now we've created already successfully a **Microservice**. To make it more **interesting** and make it **save**,
-we'll extend it ! This is a big benefit of a **Microservice-Architecture** rather than a Monolithic-Architecture. 
+we'll extend it ! This is a big benefit of a **Microservice-Architecture** rather than a Monolithic-Architecture.
 We can easily extend our **Microservice**, by just adding more services to our **Discovery-Server**.
 
 ![Shows a short Overview of our current Microservice-Status](assets/images/Overview_small.PNG)
+
+## Notification Service
+
+Now we want to create an Amazon Simple Notification Service ([Aws SNS](https://aws.amazon.com/de/sns/)) 
+and connect it to an Amazon Simple Queue Service ([Aws SQS](https://aws.amazon.com/de/sqs/)). 
+We need also the AWS Identity and Access Management ([Aws IAM](https://aws.amazon.com/de/iam/)).
+
+### Dependencies
+
+For accessing our AWS we need the following dependency
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-aws-messaging</artifactId>
+        <version>2.2.5.RELEASE</version>
+    </dependency>
+
+Other dependencies what we needed. To keep it simple we add our tools Lombok and so on.
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+
+### Configuration
+
+Add to the <mark>application.yml</mark> file the following dependency... 
+
+    server:
+        port: 0
+
+    cloud:
+        aws:
+            region:
+                static: eu-central-1
+                auto: false
+            stack:
+                auto: false
+            credentials:
+                access-key: ${AWS_ACCESS_KEY}
+                secret-key: ${AWS_SECRET_KEY}
+            sns:
+                topic:
+                    interviewStatus: 
+                        arn: ${AWS_SNS_ARN}
+        
+    eureka:
+        client:
+            service-url:
+                defaultZone: http://localhost:8761/eureka
+        instance:
+            instance-id: ${spring.application.name}:${random.uuid}
+        
+    logging:
+        level:
+            com:
+                amazonaws:
+                    util:
+                        EC2MetadataUtils: error
+                        internal:
+                            InstanceMetadataServiceResourceFetcher: error
+
+### NotificationConfig class
+
+Create a NotificationConfig class to configure our service. 
+
+    @Configuration
+    public class NotificationConfig {
+
+        @Value("${cloud.aws.credentials.access-key}")
+        private String accessKey;
+        @Value("${cloud.aws.credentials.secret-key}")
+        private String secretKey;
+        @Value("${cloud.aws.region.static}")
+        private String region;
+    
+    
+        public AmazonSQSAsync amazonSQSAsync() {
+            BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey,secretKey);
+    
+            return AmazonSQSAsyncClientBuilder
+                    .standard()
+                    .withRegion(region)
+                    .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                    .build();
+        }
+    
+        @Bean
+        public QueueMessagingTemplate queueMessagingTemplate(){
+            return new QueueMessagingTemplate(amazonSQSAsync());
+        }
+    }
+
+### Controller
+
+Create a NotificationController class to talk to our services on Amazon.
+
+    @RestController
+    @RequestMapping("/api/v1/mail")
+    @RequiredArgsConstructor
+    public class NotificationController {
+
+        @Value("${cloud.aws.sns.topic.interviewStatus.arn}")
+        private String topicArn;
+
+        private final AmazonSNSClient snsClient;
+
+        @GetMapping("/subscribe")
+        public Mono<String> addSubscription(@RequestParam String email){
+            SubscribeRequest request =
+                    new SubscribeRequest(topicArn,"email",email);
+            snsClient.subscribe(request);
+            return Mono.just("check your emails !");
+        }
+        
+        @GetMapping("/publish")
+        public Mono<String> publishMessageToTopic(@RequestParam String message){
+            PublishRequest publishRequest =
+                    new PublishRequest(topicArn,message, "****A new Blogpost was published****");
+            snsClient.publish(publishRequest);
+            return Mono.just("message successfully published");
+        }
+        
+        @SqsListener(value = "Receiver", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
+        public void receiveSuccess(String message){
+            log.info("Message received {}",message);
+        }
+    }
+
+### Main class
+
+Don't forget to add the annotation **"@EnableEurekaClient"** to the Notification-Main class.
+
+    @EnableEurekaClient
+    @SpringBootApplication
+    public class NotificationApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(NotificationApplication.class, args);
+        }
+    }
+
 ## Docker Compose 🍪
 
 ### In the end, we will use a <mark>docker-compose.yml</mark> to containerize our application
@@ -831,6 +976,10 @@ We can easily extend our **Microservice**, by just adding more services to our *
 **Other**
 + [Spring Boot Documentation 8.2. Reactive Web Applications](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#web.reactive)
 + [Microservices API Documentation with Springdoc OpenAPI](https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/)
+
+**Amazon Web Services**
++ [Aws SQS](https://aws.amazon.com/de/sqs/)
++ [Aws SNS](https://aws.amazon.com/de/sns/)
 
 **Okta Blog:**
 + [Better Testing with Spring Security Test](https://developer.okta.com/blog/2021/05/19/spring-security-testing)
