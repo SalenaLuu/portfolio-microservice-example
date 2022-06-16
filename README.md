@@ -865,7 +865,24 @@ Add the following properties to each .yml file...
     zipkin:
         baseUrl: http://localhost:9411/
 
+> Note: We can reach our Zipkin service under http://localhost:9411/
+
 ## Spring Security with Okta
+
+Use the Okta Cli and use the following command...
+
+> Note: Make sure you are registered to Okta Dev Webapps, if not you can use "okta register" command
+
+> Note: Make sure you are logged into the Okta environment, we can check it under "okta login"
+
+    okta apps create
+
++ Call the name "portfolio" 
++ Chose Option 1 for Web
++ Chose Option 2 for Spring boot 
++ leave for now the default Redirects.
+
+
 
 ## Docker Compose 🍪
 
