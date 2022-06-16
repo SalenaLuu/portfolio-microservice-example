@@ -829,6 +829,44 @@ Don't forget to add the annotation **"@EnableEurekaClient"** to the Notification
         }
     }
 
+
+## Distributed Tracing 
+
+To measure our service's performance, we use a simple service called "Zipkin". 
+
+### Dependencies
+
+We need to add two dependencies in each service 
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-sleuth</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+    </dependency>
+
+### Push Zipkin Container
+
+Push the following Container from Dockerhub to our Docker environment...
+
+Just use this command:
+
+    docker pull openzipkin/zipkin
+
+### Configuration
+
+Add the following properties to each .yml file...
+
+    sleuth:
+        sampler:
+          probability: 1.0
+    zipkin:
+        baseUrl: http://localhost:9411/
+
+## Spring Security with Okta
+
 ## Docker Compose 🍪
 
 ### In the end, we will use a <mark>docker-compose.yml</mark> to containerize our application
