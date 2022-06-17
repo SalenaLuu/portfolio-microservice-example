@@ -1337,9 +1337,9 @@ Now let's create a Configuration-Class...
 
 ## Resources 🍪
 
-**Other**
+**Spring Boot Docs**
 + [Spring Boot Documentation 8.2. Reactive Web Applications](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#web.reactive)
-+ [Microservices API Documentation with Springdoc OpenAPI](https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/)
++ [OAuth 2.0 Resource Server Opaque Token](https://docs.spring.io/spring-security/reference/reactive/oauth2/resource-server/opaque-token.html)
 
 **Amazon Web Services**
 + [Aws SQS](https://aws.amazon.com/de/sqs/)
@@ -1348,3 +1348,6 @@ Now let's create a Configuration-Class...
 **Okta Blog:**
 + [Better Testing with Spring Security Test](https://developer.okta.com/blog/2021/05/19/spring-security-testing)
 + [OAuth 2.0 Patterns with Spring Cloud Gateway](https://developer.okta.com/blog/2020/08/14/spring-gateway-patterns)
+
+**Other**
++ [Microservices API Documentation with Springdoc OpenAPI](https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/)
