@@ -1065,6 +1065,22 @@ doesn't contain any critical User-Information. Let's create...
 More Information we can find in the Spring Documentation.
 
 [OAuth 2.0 Resource Server Opaque Token](https://docs.spring.io/spring-security/reference/reactive/oauth2/resource-server/opaque-token.html)
+
+Add also the following Redirects to our Okta app 
+
+    http://localhost:8765/login
+    http://localhost:8080/login
+    http://localhost:1997/login
+    http://localhost:8765/login/oauth2/code/okta
+    http://localhost:8080/login/oauth2/code/okta
+    http://localhost:1997/login/oauth2/code/okta
+    http://localhost:8765/authorization-code/callback
+    http://localhost:8080/authorization-code/callback
+    http://localhost:1997/authorization-code/callback
+    http://localhost:8765/oauth2/default/v1/introspect
+    http://localhost:8080/oauth2/default/v1/introspect
+    http://localhost:1997/oauth2/default/v1/introspect
+
 ### Dependency
 
 We need to implement the following Dependencies...
