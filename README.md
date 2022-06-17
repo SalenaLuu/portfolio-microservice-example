@@ -909,7 +909,7 @@ We will use the Client Id, Client Secret and Client Issuer later in our services
 
 ## User-Management Service 🍪
 
-We would like to have a small service where, we check into our application via OpenIDConnect and OAuth2.
+We would like to have a small service, where we check into our application via OpenIDConnect and OAuth2.
 So let's create a new service...
 
 ### Dependencies
@@ -1041,6 +1041,137 @@ You need to specify again the **Route** to access it with http://localhost:8765
           uri: lb://user-management
           predicates:
              - Path=/api/v1/userdata**
+
+When we now start our server and try to access http://localhost:8765/api/v1/userdata we will directly 
+redirect to okta login page. In our case we created a John Doe with the username/email "test@example.com" 
+our password will be "12345678!". So let's login...
+
+If it's working you will receive a json body back with
+
+    {
+        "userName": "John Doe",
+        "email": "test@example.com",
+        "idToken": "${OKTA_ID_TOKEN}",
+        "accessToken": "${OKTA_ACCESS_TOKEN}"
+    }
+
+## Add Security to Blog Post and Notification service
+
+Now we want to secure our **"blogpost"** and **"notification"** service in our Microservice. We don't need any 
+user information directly, so we'll handle our secure request via **"Opaque-Token"** . With that "Opaque-Token" 
+we must authorize us for each request, rather than a "Jason Web Token" (short JWT), but It's more safe because that Token
+doesn't contain any critical User-Information. Let's create...
+
+More Information we can find in the Spring Documentation.
+
+[OAuth 2.0 Resource Server Opaque Token](https://docs.spring.io/spring-security/reference/reactive/oauth2/resource-server/opaque-token.html)
+### Dependency
+
+We need to implement the following Dependencies...
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.nimbusds</groupId>
+        <artifactId>oauth2-oidc-sdk</artifactId>
+        <version>9.35</version>
+        <scope>runtime</scope>
+    </dependency>
+
+Our **"Blogpost"** and **"Notification"** service, will now serve as a **"Resource Server"**, and it's dependent 
+from the **"Authorization Server"**. 
+
+### Configuration
+
+Add these properties to our <mark>.yml</mark>-files.
+
+    security:
+        oauth2:
+         resourceserver:
+            opaque-token:
+            introspection-uri: ${OKTA_INTROSPECTION-URI}
+            client-id: ${OKTA_CLIENT_ID}
+            client-secret: ${OKTA_CLIENT_SECRET}
+
+### JwtOpaqueToken
+
+Create the following class to handle the Token verification. 
+Resource from "[Better Testing with Spring Security Test](https://developer.okta.com/blog/2021/05/19/spring-security-testing)"
+
+    public class JwtOpaqueTokenIntrospector implements ReactiveOpaqueTokenIntrospector {
+        @Autowired
+        private OAuth2ResourceServerProperties oAuth2;
+        private ReactiveOpaqueTokenIntrospector delegate;
+    
+        // Use PostConstruct to inject the needed dependencies before the Constructor
+        @PostConstruct
+        private void setUp() {
+            delegate =
+                    new NimbusReactiveOpaqueTokenIntrospector(
+                            oAuth2.getOpaquetoken().getIntrospectionUri(),
+                            oAuth2.getOpaquetoken().getClientId(),
+                            oAuth2.getOpaquetoken().getClientSecret());
+        }
+    
+        public Mono<OAuth2AuthenticatedPrincipal> introspect(String token) {
+            return delegate
+                    .introspect(token)
+                    .flatMap(principal -> enhance(principal));
+        }
+    
+        private Mono<OAuth2AuthenticatedPrincipal> enhance(OAuth2AuthenticatedPrincipal principal) {
+            // Saves all Authorities from our Principal in a collection...
+            Collection<GrantedAuthority> authorities = extractAuthorities(principal);
+    
+            OAuth2AuthenticatedPrincipal enhanced =
+                    new DefaultOAuth2AuthenticatedPrincipal(
+                            principal.getAttributes(), authorities);
+    
+            return Mono.just(enhanced);
+        }
+    
+        private Collection<GrantedAuthority> extractAuthorities(OAuth2AuthenticatedPrincipal principal) {
+    
+            Collection<GrantedAuthority> authorities =
+                    new ArrayList<>(principal.getAuthorities());
+    
+            List<String> groups = principal.getAttribute("groups");
+    
+            if (groups != null) {
+                groups.stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .forEach(authorities::add);
+            }
+    
+            return authorities;
+        }
+    }
+
+Now let's create a Configuration-Class...
+
+    @EnableWebFluxSecurity
+    @EnableReactiveMethodSecurity
+    public class BlogPostSecurityConfig implements WebFluxConfigurer {
+        @Bean
+        public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+            return http.csrf().disable()
+                        .authorizeExchange()
+                        .anyExchange().authenticated()
+                        .and()
+                        .oauth2ResourceServer()
+                        .opaqueToken().and().and().build();
+        }
+        
+        @Bean
+        public ReactiveOpaqueTokenIntrospector introspector() {
+            return new JwtOpaqueTokenIntrospector();
+        }
+
+    }
+
+
 
 ## Docker Compose 🍪
 
