@@ -7,6 +7,10 @@ We connect this service to a **"NoSQL"** Database **"MongoDB"**. To play around 
 we want to implement a small **"notification"** service with **"SNS"** and **"SQS"**, where a user can 
 **"subscribe"** and **"publish"** messages to they subscribers.
 
+> Note: You can import my Postman Collection to yours 
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/b1e5628f15886b6afc66?action=collection%2Fimport)
+
 ### We will use this Architecture to build our project...
 
 ![Shows a Microservice Architecture](assets/images/Architecture_small.png)
