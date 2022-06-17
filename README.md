@@ -1059,7 +1059,7 @@ If it's working you will receive a json body back with
         "accessToken": "${OKTA_ACCESS_TOKEN}"
     }
 
-## Add Security to Blog Post and Notification service
+## Add Security to Blog Post and Notification service 🍪
 
 Now we want to secure our **"blogpost"** and **"notification"** service in our Microservice. We don't need any 
 user information directly, so we'll handle our secure request via **"Opaque-Token"** . With that "Opaque-Token" 
