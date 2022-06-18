@@ -1210,10 +1210,35 @@ Now let's create a Configuration-Class...
         }
 
     }
+## Build Docker Image with Jib
+
+To simplify the process of building a docker Image, we will use a maven plugin "Jib" 
+
+### Plugin 
+
+Add the following plugin to each service
+
+    <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>3.2.1</version>
+        <configuration>
+            <to>
+                <image>${Service Name}</image>
+            </to>
+        </configuration>
+    </plugin>
+
+### Docker Image
+
+Use the following command on each service to build a docker image.
+
+    mvn clean install jib:dockerBuild
 
 ## Docker Compose 🍪
 
-### In the end, we will use a <mark>docker-compose.yml</mark> to containerize our application
+After we created successfully a docker Image of each service we'll now compose it 
+So create a <mark>docker-compose.yml</mark>-file to containerize our microservice.
 
     version: '3.9'
 
