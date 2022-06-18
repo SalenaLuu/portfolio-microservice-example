@@ -1,7 +1,7 @@
 # 🍓 Jr. Portfolio-Microservice-Example 🍓
 
 This Project demonstrates a simple example of a **"Microservice"** Pattern with ***"Spring Boot"*** and ***"Maven"***.
-To implement security in this project, we will use **"Okta"** with a **"JWT-Token"** and an **"Opaque-Token"**. 
+To implement security in this project, we will use **"Okta"** with a **"Jason Web Token (JWT)"** and an **"Opaque-Token"**. 
 The idea is to create a **"blog-post"** service, where people can **CRUD** (*Create-Read-Update-Delete*) blog-post's. 
 We connect this service to a **"NoSQL"** Database **"MongoDB"**. To play around with **"Amazon Webservices"**, 
 we want to implement a small **"notification"** service with **"SNS"** and **"SQS"**, where a user can 
