@@ -1,29 +1,7 @@
-server:
-  port: 8765
-
 spring:
   application:
-    name: gateway
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    baseUrl: http://localhost:9411/
+    name: api-gateway
+  config:
+    import: "optional:configserver:http://localhost:8888"
 
-  cloud:
-    gateway:
-      routes:
-        - id: BlogPostController
-          uri: lb://blog-post
-          predicates:
-            - Path=/api/v1/blogpost**
-        - id: NotificationController
-          uri: lb://notification
-          predicates:
-            - Path=/api/v1/mail/**
-
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+service.version: 1.0

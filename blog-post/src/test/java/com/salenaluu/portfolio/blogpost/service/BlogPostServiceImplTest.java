@@ -7,6 +7,7 @@ import com.salenaluu.portfolio.blogpost.utils.enums.Tags;
 import com.salenaluu.portfolio.blogpost.utils.interfaces.IDateTimeCreator;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequest;
 import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostRequestUpdate;
+import com.salenaluu.portfolio.blogpost.utils.mapper.BlogPostResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,6 +54,11 @@ class BlogPostServiceImplTest {
     BlogPostRequest blogPostRequest = new BlogPostRequest(
             "This is the way",
             "A special sentence with force in it.",
+            new String[]{});
+
+    BlogPostResponse blogPostResponse = new BlogPostResponse(
+            "This is the way",
+            "A special sentence with force in it.",
             "salenaluu@gmail.com",
             new String[]{});
     // </editor-fold>
@@ -77,7 +83,8 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.save(any()))
                 .willReturn(Mono.just(blogPost));
 
-        Mono<BlogPostRequest> requestedBlogPost = blogPostService.createBlogPost(blogPostRequest);
+        Mono<BlogPostResponse> requestedBlogPost =
+                blogPostService.createBlogPost(blogPostRequest,blogPost.getCreatorEmail());
 
         StepVerifier
                 .create(requestedBlogPost)
@@ -85,9 +92,7 @@ class BlogPostServiceImplTest {
                     assertThat(check.title())
                             .isEqualTo("This is the way");
                     assertThat(check.content())
-                            .isEqualTo("A special sentence with force in it.");
-                    assertThat(check.creatorEmail())
-                            .isEqualTo("salenaluu@gmail.com");})
+                            .isEqualTo("A special sentence with force in it.");})
                 .verifyComplete();
     }
 
@@ -97,7 +102,7 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.existsBlogPostByTitleAndCreatorEmail(anyString(),anyString()))
                 .willReturn(Mono.just(true));
 
-        Mono<BlogPostRequest> requestedBlogPost = blogPostService.createBlogPost(blogPostRequest);
+        Mono<BlogPostResponse> requestedBlogPost = blogPostService.createBlogPost(blogPostRequest, blogPost.getCreatorEmail());
 
         StepVerifier
                 .create(requestedBlogPost)
@@ -113,10 +118,10 @@ class BlogPostServiceImplTest {
         BlogPostRequest emptyBlogPostRequest = new BlogPostRequest(
                 "",
                 "",
-                "test.test.com",
                 new String[]{});
 
-        Mono<BlogPostRequest> requestedBlockPost = blogPostService.createBlogPost(emptyBlogPostRequest);
+        Mono<BlogPostResponse> requestedBlockPost =
+                blogPostService.createBlogPost(emptyBlogPostRequest,blogPost.getCreatorEmail());
 
         StepVerifier
                 .create(requestedBlockPost)
@@ -131,7 +136,8 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.save(any()))
                 .willReturn(Mono.empty());
 
-        Mono<BlogPostRequest> requestedBlogPost = blogPostService.createBlogPost(blogPostRequest);
+        Mono<BlogPostResponse> requestedBlogPost =
+                blogPostService.createBlogPost(blogPostRequest, blogPost.getCreatorEmail());
 
         StepVerifier
                 .create(requestedBlogPost)
@@ -146,7 +152,7 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.findByTitleAndCreatorEmail(anyString(),anyString()))
                 .willReturn(Mono.just(blogPost));
 
-        Mono<BlogPostRequest> requestedBlogPost =
+        Mono<BlogPostResponse> requestedBlogPost =
                 blogPostService.getBlogPostByTitleAndCreatorEmail(
                         "This is the way",
                         "A special sentence with force in it.");
@@ -157,9 +163,7 @@ class BlogPostServiceImplTest {
                     assertThat(check.title())
                             .isEqualTo("This is the way");
                     assertThat(check.content())
-                            .isEqualTo("A special sentence with force in it.");
-                    assertThat(check.creatorEmail())
-                            .isEqualTo("salenaluu@gmail.com");})
+                            .isEqualTo("A special sentence with force in it.");})
                 .verifyComplete();
     }
 
@@ -169,7 +173,7 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.existsBlogPostByTitleAndCreatorEmail(anyString(),anyString()))
                 .willReturn(Mono.just(false));
 
-        Mono<BlogPostRequest> requestedBlogPost =
+        Mono<BlogPostResponse> requestedBlogPost =
                 blogPostService.getBlogPostByTitleAndCreatorEmail(
                         "This is the way",
                         "A special sentence with force in it.");
@@ -185,15 +189,13 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.findAll())
                 .willReturn(Flux.just(blogPost));
 
-        Flux<BlogPostRequest> allBlogPosts = blogPostService.getAllBlogPosts();
+        Flux<BlogPostResponse> allBlogPosts = blogPostService.getAllBlogPosts();
 
         StepVerifier
                 .create(allBlogPosts)
                 .assertNext(check -> {
                     assertThat(check.title())
-                            .isEqualTo("This is the way");
-                    assertThat(check.creatorEmail())
-                            .isEqualTo("salenaluu@gmail.com");})
+                            .isEqualTo("This is the way");})
                 .verifyComplete();
     }
 
@@ -203,7 +205,7 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.findAll())
                 .willReturn(Flux.empty());
 
-        Flux<BlogPostRequest> allBlogPosts = blogPostService.getAllBlogPosts();
+        Flux<BlogPostResponse> allBlogPosts = blogPostService.getAllBlogPosts();
 
         StepVerifier
                 .create(allBlogPosts)
@@ -225,7 +227,7 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.findAllByTags(any()))
                 .willReturn(Flux.just(systemOfADown));
 
-        Flux<BlogPostRequest> allBlogPostsWithTags =
+        Flux<BlogPostResponse> allBlogPostsWithTags =
                 blogPostService.getAllBlogPostsWithTags(new String[]{"FRESH"});
 
         StepVerifier
@@ -244,7 +246,7 @@ class BlogPostServiceImplTest {
         given(blogPostRepository.findAllByTags(any()))
                 .willReturn(Flux.empty());
 
-        Flux<BlogPostRequest> allBlogPostsWithTags =
+        Flux<BlogPostResponse> allBlogPostsWithTags =
                 blogPostService.getAllBlogPostsWithTags(new String[]{"FRESH"});
 
         StepVerifier
@@ -269,13 +271,12 @@ class BlogPostServiceImplTest {
                         "Can you feel it?",
                         new String[]{"fresh","funny"});
 
-        Mono<BlogPostRequest> requestedBlogPostUpdate = blogPostService.updateBlogPost(blogPostRequestUpdate,email);
+        Mono<BlogPostResponse> requestedBlogPostUpdate =
+                blogPostService.updateBlogPost(blogPostRequestUpdate,email);
 
         StepVerifier
                 .create(requestedBlogPostUpdate)
                 .assertNext(check -> {
-                    assertThat(check.creatorEmail())
-                            .isEqualTo("salenaluu@gmail.com");
                     assertThat(check.title())
                             .isEqualTo("This is a joke");
                     assertThat(check.tags().length)
@@ -296,7 +297,8 @@ class BlogPostServiceImplTest {
                         "Can you feel it?",
                         new String[]{"fresh","funny"});
 
-        Mono<BlogPostRequest> requestedBlogPostUpdate = blogPostService.updateBlogPost(blogPostRequestUpdate,email);
+        Mono<BlogPostResponse> requestedBlogPostUpdate =
+                blogPostService.updateBlogPost(blogPostRequestUpdate,email);
 
         StepVerifier
                 .create(requestedBlogPostUpdate)

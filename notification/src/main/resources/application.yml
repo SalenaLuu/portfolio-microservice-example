@@ -1,42 +1,7 @@
-server:
-  port: 0
-
 spring:
   application:
     name: notification
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    baseUrl: http://localhost:9411/
+  config:
+    import: "optional:configserver:http://localhost:8888"
 
-cloud:
-  aws:
-    region:
-      static: eu-central-1
-      auto: false
-    stack:
-      auto: false
-    credentials:
-      access-key: ${ACCESS_KEY}
-      secret-key: ${SECRET_KEY}
-    sns:
-      topic:
-        interviewStatus:
-          arn: ${SNS_ARN}
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    instance-id: ${spring.application.name}:${random.uuid}
-
-logging:
-  level:
-    com:
-      amazonaws:
-        util:
-          EC2MetadataUtils: error
-        internal:
-          InstanceMetadataServiceResourceFetcher: error
+service.version: 1.0

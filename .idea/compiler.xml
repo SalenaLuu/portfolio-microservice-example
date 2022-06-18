@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="notification" />
+        <module name="config-server" />
         <module name="eureka-server" />
         <module name="blog-post" />
         <module name="user-management" />

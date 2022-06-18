@@ -26,4 +26,9 @@ public class UserManagementController {
         myUser.setAccessToken(client.getAccessToken().getTokenValue());
         return Mono.just(myUser);
     }
+
+    @GetMapping("/email")
+    public Mono<String> currentEmail(@AuthenticationPrincipal OidcUser oidcUser){
+        return Mono.just(oidcUser.getEmail());
+    }
 }
