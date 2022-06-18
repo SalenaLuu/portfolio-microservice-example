@@ -1366,6 +1366,26 @@ So create a <mark>docker-compose.yml</mark>-file to containerize our microservic
     volumes:
         mongodb_data_container:
 
+## Review
+
+We created now successfully a Microservice. Our Backend can now talk to any Frontend Application.
+If you like you can add some special design things like customization of the Banners. 
+
+[Create your Banner.txt](https://devops.datenkollektiv.de/banner.txt/index.html)
+
+    ,--------. ,--.                        ,--.                                  
+    '--.  .--' |  ,---.   ,--,--. ,--,--,  |  |,-.    ,--. ,--.  ,---.  ,--.,--.
+       |  |    |  .-.  | ' ,-.  | |      \ |     /     \  '  /  | .-. | |  ||  |
+       |  |    |  | |  | \ '-'  | |  ||  | |  \  \      \   '   ' '-' ' '  ''  '
+       `--'    `--' `--'  `--`--' `--''--' `--'`--'   .-'  /     `---'   `----'  
+                                                      `---'
+    -----------------------------------------------------------------------------------
+    Jr. Portfolio-Microservice-Example ~ Version 1.0
+    Created by Sarah Lena De Matos Silva Knell alias SalenaLuu
+    Powered by Spring Boot ${spring-boot.version}
+    
+    +++ May the force be with you +++
+
 ## Resources 🍪
 
 **Spring Boot Docs**
