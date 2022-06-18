@@ -11,6 +11,26 @@ we want to implement a small **"notification"** service with **"SNS"** and **"SQ
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/b1e5628f15886b6afc66?action=collection%2Fimport)
 
+We'll have these endpoints...
+    
+    =============== BlogPost Service ===============
+
+    POST     http://localhost:8765/api/v1/blogpost 
+    GET      http://localhost:8765/api/v1/blogpost 
+    GET      http://localhost:8765/api/v1/blogpost/filter 
+    GET      http://localhost:8765/api/v1/blogpost/find 
+    PUT      http://localhost:8765/api/v1/blogpost/update 
+    DELETE   http://localhost:8765/api/v1/blogpost
+
+    =============== Notification Service ===============
+
+    GET      http://localhost:8765/api/v1/mail/subscribe
+    GET      http://localhost:8765/api/v1/mail/publish
+
+    =============== User-Management Service ===============
+
+    GET      http://localhost:8765/api/v1/userdata
+
 ### We will use this Architecture to build our project...
 
 ![Shows a Microservice Architecture](assets/images/Architecture_small.png)
