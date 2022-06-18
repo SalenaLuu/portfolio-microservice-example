@@ -1359,18 +1359,6 @@ So create a <mark>docker-compose.yml</mark>-file to containerize our microservic
             networks:
                 - portfolio
             restart: on-failure
-    #<========== Swagger UI ==========>
-        swagger-ui:
-            build: .
-            image: swaggerapi/swagger-ui:latest
-            mem_reservation: 700m
-            container_name: swagger-ui_container
-            ports:
-                - "9999:9999"
-            depends_on:
-                - api-gateway
-            networks:
-                - portfolio
 
     networks:
         portfolio:
