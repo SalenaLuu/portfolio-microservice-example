@@ -1237,7 +1237,7 @@ Use the following command on each service to build a docker image.
 
 ## Docker Compose 🍪
 
-After we created successfully a docker Image of each service we'll now compose it 
+After we created successfully a docker Image of each service we'll now compose it.
 So create a <mark>docker-compose.yml</mark>-file to containerize our microservice.
 
     version: '3.9'
