@@ -1382,7 +1382,7 @@ If you like you can add some special design things like customization of the Ban
     -----------------------------------------------------------------------------------
     Jr. Portfolio-Microservice-Example ~ Version 1.0
     Created by Sarah Lena De Matos Silva Knell alias SalenaLuu
-    Powered by Spring Boot ${spring-boot.version}
+    Powered by Spring Boot 2.6.8
     
     +++ May the force be with you +++
 
