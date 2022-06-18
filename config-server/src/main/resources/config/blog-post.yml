@@ -17,7 +17,7 @@ spring:
     oauth2:
       resourceserver:
         opaque-token:
-          introspection-uri: ${OKTA_INTROSPECTION_URI}
+          introspection-uri: ${OKTA_INTROSPECTION-URI}
           client-id: ${OKTA_CLIENT_ID}
           client-secret: ${OKTA_CLIENT_SECRET}
 

@@ -11,8 +11,6 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http.csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/","/v3/api-docs/**", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html")
-                    .permitAll()
                 .anyExchange()
                 .authenticated()
                 .and().oauth2Login()

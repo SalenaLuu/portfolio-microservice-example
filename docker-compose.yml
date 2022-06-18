@@ -129,12 +129,9 @@ services:
       - api-gateway
     networks:
       - portfolio
-   # volumes:
-      #- ./doc:/usr/share/nginx/html/doc
 
 networks:
   portfolio:
 
 volumes:
   mongodb_data_container:
- # swagger_ui_data_container:

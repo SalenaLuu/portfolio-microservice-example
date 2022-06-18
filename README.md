@@ -913,7 +913,8 @@ We will use the Client Id, Client Secret and Client Issuer later in our services
 
 ## User-Management Service 🍪
 
-We would like to have a small service, where we check into our application via OpenIDConnect and OAuth2.
+We would like to have a small service, where we authenticate us with OpenID-Connect. We will get
+a Jason Web Token with that we are authenticated and can have access to our endpoints. 
 So let's create a new service...
 
 ### Dependencies
@@ -950,7 +951,6 @@ Add also
     </dependency>
 
 And some tools Lombok and so on.
-
 
 ### Configuration
 
@@ -1047,7 +1047,7 @@ You need to specify again the **Route** to access it with http://localhost:8765
              - Path=/api/v1/userdata**
 
 When we now start our server and try to access http://localhost:8765/api/v1/userdata we will directly 
-redirect to okta login page. In our case we created a John Doe with the username/email "test@example.com" 
+redirect to okta login page. In our case we already created a "John Doe" with the username/email "test@example.com" 
 our password will be "12345678!". So let's login...
 
 If it's working you will receive a json body back with
@@ -1190,8 +1190,6 @@ Now let's create a Configuration-Class...
         }
 
     }
-
-
 
 ## Docker Compose 🍪
 

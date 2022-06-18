@@ -17,8 +17,10 @@ spring:
         - id: BlogPostController
           uri: lb://blog-post
           predicates:
-            - Path=/api/v1/blogpost**
-            - Path=/api/v1/blogpost/**
+            - Path=/api/v1/blogpost
+            - Path=/api/v1/blogpost/find
+            - Path=/api/v1/blogpost/filter
+            - Path=/api/v1/blogpost/update
         - id: NotificationController
           uri: lb://notification
           predicates:
@@ -27,43 +29,15 @@ spring:
           uri: lb://user-management
           predicates:
             - Path=/api/v1/userdata**
-        - id: openapi
-          uri: http://localhost:${server.port}
-          predicates:
-            - Path=/v3/api-docs/**
-          filters:
-            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
 
 okta:
   oauth2:
-    issuer: https://dev-58955540.okta.com/oauth2/default
-    client-id: 0oa5863m10Y6kLUKC5d7
-    client-secret: a6EMP-wt6rBOdCjxWNxcFKQPijkHeJqViTKER3yv
+    issuer: ${OKTA_CLIENT_ISSUER}
+    client-id: ${OKTA_CLIENT_ID}
+    client-secret: ${OKTA_CLIENT_SECRET}
     scopes: openid, profile, email
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-
-zuul:
-  routes:
-    blog-post:
-      path: /api/v1/blogpost**
-      serviceId: blog-post
-    notification:
-      path: /api/v1/email**
-      serviceId: notification
-    user-management:
-      path: /api/v1/userdata**
-      serviceId: user-management
-
-springdoc:
-  swagger-ui:
-    urls:
-      - name: blog-post
-        url: /v3/api-docs/blogpost
-      - name: notification
-        url: /v3/api-docs/notification
-      - name: user-management
-        url: /v3/api-docs/userdata

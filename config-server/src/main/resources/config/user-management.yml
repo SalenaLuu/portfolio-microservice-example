@@ -19,7 +19,7 @@ eureka:
 
 okta:
   oauth2:
-    issuer: ${OKTA_CLIENT_ISSUER}
+    issuer: ${OKTA_ISSUER}
     client-id: ${OKTA_CLIENT_ID}
     client-secret: ${OKTA_CLIENT_SECRET}
     scopes: openid, profile, email

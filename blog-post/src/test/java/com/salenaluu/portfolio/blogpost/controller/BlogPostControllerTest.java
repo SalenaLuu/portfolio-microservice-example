@@ -174,7 +174,8 @@ class BlogPostControllerTest {
 
         verify(blogPostRepository,times(1))
                 .existsBlogPostByTitleAndCreatorEmail(anyString(),anyString());
-    }*/
+    }
+
 
     @Test
     @DisplayName("should getBlogPostByTitleAndCreatorEmail()")
@@ -233,7 +234,7 @@ class BlogPostControllerTest {
 
         verify(blogPostRepository,times(1))
                 .existsBlogPostByTitleAndCreatorEmail(anyString(),anyString());
-    }
+    }*/
 
     @Test
     @DisplayName("should getAllBlogPosts()")
@@ -308,7 +309,7 @@ class BlogPostControllerTest {
     }
 
     // TODO: FIX CONTROLLER PUT REQUEST
-    /*@Test
+   /* @Test
     @DisplayName("should updateBlogPost()")
     void should_updateBlogPost() {
         when(blogPostRepository.existsBlogPostByTitleAndCreatorEmail(anyString(),anyString()))
@@ -353,6 +354,7 @@ class BlogPostControllerTest {
                 .existsBlogPostByTitleAndCreatorEmail(anyString(),anyString());
     }*/
 
+
     // TODO: FIX CONTROLLER DELETE REQUEST
     /*@Test
     @DisplayName("should deleteBlogPostByTitleAndCreatorEmail()")
@@ -393,4 +395,5 @@ class BlogPostControllerTest {
         verify(blogPostRepository,times(1))
                 .existsBlogPostByTitleAndCreatorEmail(anyString(),anyString());
     }*/
+
 }

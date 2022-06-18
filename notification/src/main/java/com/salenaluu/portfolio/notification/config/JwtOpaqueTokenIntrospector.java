@@ -1,6 +1,5 @@
-package com.salenaluu.portfolio.blogpost.security;
+package com.salenaluu.portfolio.notification.config;
 
-import org.springframework.security.oauth2.server.resource.introspection.ReactiveOpaqueTokenIntrospector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.NimbusReactiveOpaqueTokenIntrospector;
+import org.springframework.security.oauth2.server.resource.introspection.ReactiveOpaqueTokenIntrospector;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
@@ -50,7 +50,8 @@ public class JwtOpaqueTokenIntrospector implements ReactiveOpaqueTokenIntrospect
 
     private Collection<GrantedAuthority> extractAuthorities(OAuth2AuthenticatedPrincipal principal) {
 
-        Collection<GrantedAuthority> authorities = new ArrayList<>(principal.getAuthorities());
+        Collection<GrantedAuthority> authorities =
+                new ArrayList<>(principal.getAuthorities());
 
         List<String> groups = principal.getAttribute("groups");
 

@@ -1,17 +1,15 @@
-package com.salenaluu.portfolio.blogpost.security;
+package com.salenaluu.portfolio.notification.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.server.resource.introspection.ReactiveOpaqueTokenIntrospector;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
-@Profile(value = {"development","production"})
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-public class BlogPostSecurityConfig{
+public class NotificationSecurityConfig{
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http.csrf().disable()
